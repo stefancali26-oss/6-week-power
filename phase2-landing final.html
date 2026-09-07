@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phase 2 — Strength & Power · Coach Cali</title>
+<meta name="description" content="6 weeks converting strength into explosive power. Olympic lifting, plyometrics, and a full testing week. Free download.">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;900&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --orange:#1B6E9C;--orange-light:#3B8FBE;--orange-dim:rgba(27,110,156,0.12);
+  --blue:#D9631C;--blue-light:#E8863F;
+  --dark:#101418;--dark2:#161C22;--dark3:#1D252C;--dark4:#283239;
+  --grey:#8C857A;--grey2:#5A6772;--white:#F5F2EC;
+  --green:#2E9E63;
+}
+html{scroll-behavior:smooth;}
+body{font-family:'Public Sans',sans-serif;background:var(--dark);color:var(--white);min-height:100vh;line-height:1.6;-webkit-font-smoothing:antialiased;}
+a{color:inherit;text-decoration:none;}
+.container{max-width:820px;margin:0 auto;padding:0 24px;}
+::selection{background:var(--orange);color:var(--dark);}
+
+/* NAV */
+.l-nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;
+  padding:16px 24px;background:rgba(16,20,24,0);transition:background 0.4s,backdrop-filter 0.4s;}
+.l-nav.scrolled{background:rgba(16,20,24,0.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.05);}
+.l-nav-logo{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:900;letter-spacing:0.08em;text-transform:uppercase;color:var(--white);}
+.l-nav-logo span{color:var(--blue-light);}
+.l-nav-phase{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--grey);letter-spacing:0.08em;}
+
+/* HERO — high energy, photo-ready */
+.hero{position:relative;min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;
+  padding:0 24px 90px;overflow:hidden;background:
+    radial-gradient(ellipse 800px 600px at 20% -10%, rgba(27,110,156,0.18) 0%, transparent 55%),
+    radial-gradient(ellipse 700px 700px at 90% 30%, rgba(217,99,28,0.12) 0%, transparent 55%);}
+.hero-content{position:relative;z-index:2;max-width:600px;}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:700;letter-spacing:0.14em;
+  text-transform:uppercase;color:rgba(255,255,255,0.65);margin-bottom:22px;}
+.hero-dot{width:6px;height:6px;border-radius:50%;background:var(--blue-light);animation:blink 2.5s infinite;}
+@keyframes blink{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.35;transform:scale(0.7);}}
+.hero h1{font-family:'Space Grotesk',sans-serif;font-weight:900;line-height:0.92;letter-spacing:-0.03em;margin-bottom:22px;}
+.hero-line{display:block;font-size:clamp(46px,11vw,80px);color:var(--white);text-transform:uppercase;}
+.hero-line-accent{color:var(--blue-light);}
+.hero-sub{font-size:16px;color:rgba(255,255,255,0.68);line-height:1.7;margin-bottom:34px;max-width:440px;}
+.hero-sub b{color:var(--white);font-weight:700;}
+.hero-cta{display:inline-flex;align-items:center;gap:10px;background:var(--blue);color:var(--white);border:none;
+  border-radius:5px;padding:18px 34px;font-size:14px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;
+  cursor:pointer;font-family:'Public Sans',sans-serif;transition:all 0.2s;}
+.hero-cta:hover{background:var(--blue-light);transform:translateY(-2px);}
+.hero-meta-row{display:flex;gap:22px;margin-top:30px;flex-wrap:wrap;}
+.hero-meta{font-family:'IBM Plex Mono',monospace;font-size:11px;color:rgba(255,255,255,0.4);}
+.hero-meta b{color:rgba(255,255,255,0.85);font-weight:600;}
+.hero-scroll-hint{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);z-index:2;
+  display:flex;flex-direction:column;align-items:center;gap:8px;color:rgba(255,255,255,0.35);
+  font-size:10px;letter-spacing:0.14em;text-transform:uppercase;}
+.scroll-line{width:1px;height:36px;background:linear-gradient(to bottom,transparent,var(--blue-light));animation:scrollAnim 2s infinite;}
+@keyframes scrollAnim{0%{opacity:0;transform:scaleY(0);transform-origin:top;}50%{opacity:1;}100%{opacity:0;transform:scaleY(1);transform-origin:top;}}
+
+/* QUOTE BLOCK — full bleed orange, like TPB */
+.quote-block{padding:70px 24px;background:var(--orange);text-align:center;position:relative;overflow:hidden;}
+.quote-block::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,0,0,0.14),transparent);}
+.quote-inner{position:relative;z-index:1;max-width:680px;margin:0 auto;}
+.quote-mark{font-family:'Space Grotesk',sans-serif;font-size:64px;font-weight:900;color:rgba(0,0,0,0.15);line-height:0.4;margin-bottom:6px;}
+.quote-text{font-family:'Space Grotesk',sans-serif;font-size:clamp(26px,5.5vw,40px);font-weight:900;
+  text-transform:uppercase;color:var(--dark);line-height:1.05;letter-spacing:-0.01em;margin-bottom:14px;}
+.quote-attr{font-size:12px;color:rgba(0,0,0,0.55);letter-spacing:0.1em;text-transform:uppercase;font-weight:700;}
+
+/* SECTION */
+.section{padding:72px 0;}
+.section-eyebrow{font-size:10.5px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--blue-light);margin-bottom:12px;}
+.section h2{font-family:'Space Grotesk',sans-serif;font-size:clamp(28px,5vw,42px);font-weight:800;
+  text-transform:uppercase;line-height:0.98;letter-spacing:-0.01em;margin-bottom:20px;max-width:620px;}
+.section p{font-size:15.5px;color:rgba(245,242,236,0.65);line-height:1.8;margin-bottom:16px;max-width:600px;}
+.section p b{color:var(--white);font-weight:700;}
+.section p:last-of-type{margin-bottom:0;}
+
+/* LIFT TAGS */
+.lift-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:26px;}
+.lift-tag{background:var(--dark2);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:9px 18px;
+  font-size:12.5px;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:0.03em;}
+
+/* WHAT CARDS — energetic reveal-on-scroll */
+.what-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:2px;background:rgba(255,255,255,0.06);
+  border-radius:10px;overflow:hidden;margin-top:32px;}
+.what-card{background:var(--dark2);padding:26px 22px;}
+.what-num{font-family:'Space Grotesk',sans-serif;font-size:40px;font-weight:900;color:rgba(59,143,190,0.22);line-height:1;margin-bottom:10px;}
+.what-title{font-size:14px;font-weight:700;color:var(--white);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.02em;}
+.what-desc{font-size:12.5px;color:var(--grey);line-height:1.6;}
+
+/* TIMELINE */
+.timeline{margin-top:32px;position:relative;padding-left:36px;}
+.timeline::before{content:'';position:absolute;left:10px;top:10px;bottom:10px;width:2px;background:linear-gradient(to bottom,var(--blue-light),rgba(59,143,190,0.1));}
+.tl-item{position:relative;padding-bottom:32px;}
+.tl-item:last-child{padding-bottom:0;}
+.tl-dot{position:absolute;left:-36px;top:2px;width:22px;height:22px;border-radius:50%;background:var(--dark2);
+  border:2px solid var(--blue-light);display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 4px var(--dark);}
+.tl-dot::after{content:'';width:7px;height:7px;border-radius:50%;background:var(--blue-light);}
+.tl-title{font-size:16px;font-weight:700;color:var(--white);margin-bottom:5px;text-transform:uppercase;letter-spacing:0.01em;}
+.tl-desc{font-size:13.5px;color:var(--grey);line-height:1.65;max-width:500px;}
+
+/* TESTIMONIALS — TPB style with initials avatar */
+.testi-scroll{display:flex;gap:14px;overflow-x:auto;padding:32px 24px 8px;scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none;margin:0 -24px;}
+.testi-scroll::-webkit-scrollbar{display:none;}
+.testi-card{background:var(--dark2);border:1px solid rgba(255,255,255,0.06);border-radius:10px;
+  min-width:280px;max-width:300px;scroll-snap-align:start;flex-shrink:0;padding:22px;}
+.testi-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--dark4),var(--dark3));
+  display:flex;align-items:center;justify-content:center;margin-bottom:16px;}
+.testi-avatar span{font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:700;color:var(--orange-light);}
+.testi-quote{font-size:13.5px;color:#d0d0d0;line-height:1.65;font-style:italic;margin-bottom:16px;}
+.testi-name{font-size:13px;font-weight:700;color:var(--white);}
+.testi-role{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--grey2);margin-top:2px;}
+.testi-club{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--orange-light);margin-top:2px;}
+
+/* GATE — the moment */
+.gate-section{position:relative;padding:90px 24px 100px;background:var(--dark2);overflow:hidden;}
+.gate-section::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 700px 500px at 50% 0%,rgba(27,110,156,0.16),transparent 65%);pointer-events:none;}
+.gate-inner{position:relative;max-width:440px;margin:0 auto;text-align:center;}
+.gate-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:700;letter-spacing:0.12em;
+  text-transform:uppercase;color:var(--blue-light);margin-bottom:20px;}
+.gate-inner h2{font-family:'Space Grotesk',sans-serif;font-size:clamp(32px,6vw,46px);font-weight:900;
+  text-transform:uppercase;margin-bottom:14px;line-height:0.98;}
+.gate-inner > p{font-size:14.5px;color:rgba(245,242,236,0.6);line-height:1.7;margin-bottom:34px;}
+
+#mc_embed_signup{background:none;clear:left;width:100%;}
+#mc_embed_signup_scroll{display:flex;flex-direction:column;gap:12px;}
+#mc_embed_signup h2{display:none;}
+.indicates-required{display:none;}
+.mc-field-group{text-align:left;}
+.mc-field-group label{display:block;font-size:11px;color:var(--grey);text-transform:uppercase;letter-spacing:0.08em;
+  margin-bottom:9px;font-weight:600;}
+.mc-field-group label .asterisk{display:none;}
+#mce-EMAIL{width:100%;background:var(--dark);border:1.5px solid rgba(255,255,255,0.1);border-radius:6px;
+  padding:17px 18px;color:var(--white);font-size:16px;font-family:'Public Sans',sans-serif;outline:none;
+  transition:border-color 0.2s,box-shadow 0.2s;}
+#mce-EMAIL:focus{border-color:var(--blue-light);box-shadow:0 0 0 3px rgba(59,143,190,0.15);}
+#mce-EMAIL::placeholder{color:var(--grey2);}
+#mce-responses{margin:0;}
+.response{font-size:13px;padding:8px 0;}
+#mce-error-response{color:#E06A5F;}
+#mce-success-response{color:var(--green);}
+.clear input[type="submit"]{width:100%;background:var(--blue);color:var(--white);border:none;border-radius:6px;
+  padding:18px;font-size:14px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;cursor:pointer;
+  font-family:'Public Sans',sans-serif;transition:all 0.2s;}
+.clear input[type="submit"]:hover{background:var(--blue-light);transform:translateY(-2px);}
+.gate-note{font-size:11.5px;color:var(--grey2);margin-top:18px;line-height:1.6;}
+
+.gate-success{display:none;}
+.gate-success.visible{display:block;}
+.gate-success-icon{width:56px;height:56px;border-radius:50%;background:rgba(46,158,99,0.14);
+  border:1.5px solid var(--green);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;}
+.gate-success-icon svg{width:24px;height:24px;}
+.gate-success h3{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:800;
+  text-transform:uppercase;margin-bottom:10px;}
+.gate-success p{font-size:14px;color:rgba(245,242,236,0.6);line-height:1.6;margin-bottom:26px;}
+.gate-download-btn{display:inline-flex;align-items:center;gap:10px;background:var(--green);color:var(--dark);
+  border:none;border-radius:6px;padding:17px 32px;font-size:14px;font-weight:800;letter-spacing:0.06em;
+  text-transform:uppercase;cursor:pointer;font-family:'Public Sans',sans-serif;transition:all 0.2s;}
+.gate-download-btn:hover{transform:translateY(-2px);filter:brightness(1.08);}
+
+
+footer{padding:36px 24px;text-align:center;border-top:1px solid rgba(255,255,255,0.06);}
+.footer-logo{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;letter-spacing:0.08em;
+  text-transform:uppercase;color:var(--grey2);}
+.footer-logo span{color:var(--orange-light);}
+
+/* reveal on scroll */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+@media(max-width:600px){
+  .hero{padding:0 20px 70px;}
+  .quote-block{padding:52px 20px;}
+  .section{padding:52px 0;}
+  .gate-section{padding:64px 20px 76px;}
+}
+</style>
+</head>
+<body>
+
+<nav class="l-nav" id="nav">
+  <div class="l-nav-logo">COACH <span>CALI</span></div>
+  <div class="l-nav-phase">PHASE 02 / 03</div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-eyebrow"><span class="hero-dot"></span>Phase 2 of 3 — Power Block</div>
+    <h1>
+      <span class="hero-line">BUILD</span>
+      <span class="hero-line hero-line-accent">POWER.</span>
+    </h1>
+    <p class="hero-sub">Six weeks. Four days a week. The same power block I run with SANFL footballers and A-League professionals once their strength base is built. <b>Free to download.</b></p>
+    <button class="hero-cta" onclick="document.getElementById('gate').scrollIntoView({behavior:'smooth'})">Get the program</button>
+    <div class="hero-meta-row">
+      <div class="hero-meta"><b>6</b> weeks</div>
+      <div class="hero-meta"><b>4</b> days / week</div>
+      <div class="hero-meta"><b>Commercial gym</b></div>
+    </div>
+  </div>
+  <div class="hero-scroll-hint">
+    Scroll
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- WHAT IT IS -->
+<section class="section reveal">
+  <div class="container">
+    <div class="section-eyebrow">What it is</div>
+    <h2>A strength block paired with a dedicated power session, every single week</h2>
+    <p>Phase 2 runs four sessions a week — a heavy strength day and a dedicated power session for both press and pull patterns. Each strength session builds toward a new working max; each power session trains the same pattern at maximum speed instead of maximum load. Squat heavy on Monday, jump explosively on Tuesday — same movement, different intent.</p>
+    <p>Week 7 opens with a ramping test to establish fresh working maxes. From there, box jumps, med ball throws, banded countermovement jumps, and power cleans get layered in alongside the strength work. Week 12 closes the block with a full re-test — squat, bench, trap bar deadlift, and seal row all pushed to genuine new maxes.</p>
+    <div class="lift-row">
+      <span class="lift-tag">Power Clean</span>
+      <span class="lift-tag">Box Jump</span>
+      <span class="lift-tag">Trap Bar Deadlift</span>
+      <span class="lift-tag">Med Ball Throw</span>
+      <span class="lift-tag">Banded CMJ</span>
+      <span class="lift-tag">Seal Row</span>
+    </div>
+  </div>
+</section>
+
+<!-- WHY -->
+<section class="section reveal">
+  <div class="container">
+    <div class="section-eyebrow">Why it's built this way</div>
+    <h2>Strength without speed is wasted. Speed without strength gets you hurt</h2>
+    <p>A strong squat means nothing on the field if you can't express that strength quickly. That's the entire premise of Phase 2 — every heavy lift is paired with an explosive version of the same pattern, so the strength you've built actually shows up as speed, not just a bigger number on a bar.</p>
+    <p>This is where most programs get it wrong — they either keep grinding heavy strength work indefinitely, or they jump to plyometrics too early and athletes get hurt landing box jumps they weren't ready for. Phase 2 pairs the two deliberately, in the same session, so your nervous system learns to convert load into speed.</p>
+    <div class="what-grid">
+      <div class="what-card">
+        <div class="what-num">01</div>
+        <div class="what-title">Strength + Power</div>
+        <div class="what-desc">Every heavy lift paired with an explosive version of the same movement pattern.</div>
+      </div>
+      <div class="what-card">
+        <div class="what-num">02</div>
+        <div class="what-title">Olympic Lifting</div>
+        <div class="what-desc">Power cleans introduced and progressed properly across the full six weeks.</div>
+      </div>
+      <div class="what-card">
+        <div class="what-num">03</div>
+        <div class="what-title">Full Re-Test</div>
+        <div class="what-desc">Week 12 closes with genuine new maxes on all four key lifts, logged and compared.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STRUCTURE -->
+<section class="section reveal">
+  <div class="container">
+    <div class="section-eyebrow">How the week runs</div>
+    <h2>Four sessions. Strength and power, every week</h2>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-title">Full Body Press</div>
+        <div class="tl-desc">Heavy squat and bench work, ramping toward a fresh working max each week.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-title">Press / Power</div>
+        <div class="tl-desc">Concentric-only split squats, chest press throws, and med ball work — same pattern, maximum speed.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-title">Full Body Pull</div>
+        <div class="tl-desc">Trap bar deadlift and seal row, straight sets building toward Week 12's re-test.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-title">Pull / Power</div>
+        <div class="tl-desc">Power cleans, explosive inverted rows, and jump variations to close the week.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY IT MATTERS -->
+<section class="section reveal">
+  <div class="container">
+    <div class="section-eyebrow">Why this matters</div>
+    <h2>The field doesn't reward how much you can lift slowly</h2>
+    <p>Every sprint, jump, tackle, and change of direction happens in under half a second. A strong lift built over three seconds under the bar doesn't transfer to that automatically — the nervous system has to be trained separately to produce force fast, not just produce it eventually.</p>
+    <p>That's the gap Phase 2 closes. Six weeks of pairing load with speed, so the strength from Phase 1 stops being a gym number and starts being something you can actually use on the field.</p>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section reveal" style="padding-bottom:0">
+  <div class="container">
+    <div class="section-eyebrow">What athletes say</div>
+    <h2>Juniors, semi-professionals, elite athletes</h2>
+  </div>
+  <div class="testi-scroll">
+    <div class="testi-card">
+      <div class="testi-avatar"><span>PK</span></div>
+      <div class="testi-quote">"Sessions have helped me a lot. I'm stronger and faster too — and in such a short period of time."</div>
+      <div class="testi-name">Pana Kikianis</div>
+      <div class="testi-role">Central Defender</div>
+      <div class="testi-club">Adelaide United · A-League</div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-avatar"><span>SH</span></div>
+      <div class="testi-quote">"I think you're the man 100% to bring that out of me. Eye opening, even in the gym."</div>
+      <div class="testi-name">Steve Hall</div>
+      <div class="testi-role">Goalkeeper</div>
+      <div class="testi-club">Brighton U21</div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-avatar"><span>JT</span></div>
+      <div class="testi-quote">"I have never worked with someone in the gym like you. Can't wait to come back and train again."</div>
+      <div class="testi-name">Julian Tisato</div>
+      <div class="testi-role">Goalkeeper</div>
+      <div class="testi-club">Valmontone FC</div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-avatar"><span>AP</span></div>
+      <div class="testi-quote">"I used your power workouts all year!"</div>
+      <div class="testi-name">Alexandar Popovic</div>
+      <div class="testi-role">Central Defender</div>
+      <div class="testi-club">Sydney FC</div>
+    </div>
+  </div>
+</section>
+
+<!-- GATE -->
+<section class="gate-section" id="gate">
+  <div class="gate-inner">
+    <div class="gate-eyebrow"><span class="hero-dot"></span>Phase 2 — Power</div>
+    <h2>Get the program</h2>
+    <p>Drop your email below and I'll send the download link straight to your inbox. Free, no catch.</p>
+
+    <div id="mc_embed_signup" class="gate-form-wrap">
+      <form action="https://coachcali.us21.list-manage.com/subscribe/post?u=9f956008f59f50c07a3e70f4d&amp;id=4dfda44567&amp;f_id=0047a1e6f0" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="mc_hidden_iframe" onsubmit="handleSignup(event)">
+        <div id="mc_embed_signup_scroll">
+          <div class="mc-field-group">
+            <label for="mce-EMAIL">Email Address</label>
+            <input type="email" name="EMAIL" class="required email" id="mce-EMAIL" required placeholder="you@example.com">
+          </div>
+          <div id="mce-responses" class="clear">
+            <div class="response" id="mce-error-response" style="display:none"></div>
+            <div class="response" id="mce-success-response" style="display:none"></div>
+          </div>
+          <div aria-hidden="true" style="position:absolute;left:-5000px">
+            <input type="text" name="b_9f956008f59f50c07a3e70f4d_4dfda44567" tabindex="-1" value="">
+          </div>
+          <div class="clear">
+            <input type="submit" name="subscribe" id="mc-embedded-subscribe" class="button" value="Send me Phase 2">
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="gate-success" id="gateSuccess">
+      <div class="gate-success-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#2E9E63" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>
+      </div>
+      <h3>You're in</h3>
+      <p>STRENGTH & POWER is ready. Tap below to open it.</p>
+      <a class="gate-download-btn" href="https://stefancali26-oss.github.io/6-week-power/program.html" target="_blank">Access Phase 2 Now</a>
+    </div>
+
+    <iframe name="mc_hidden_iframe" style="display:none" title="signup"></iframe>
+
+    <p class="gate-note" id="gateNote">No spam. Just the program link and occasional updates when a new phase drops.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">COACH <span>CALI</span> · THE PERFORMANCE BENCHMARK</div>
+</footer>
+
+<script src="//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js"></script>
+<script type="text/javascript">
+(function($) {
+  window.fnames = new Array(); window.ftypes = new Array();
+  fnames[0]='EMAIL'; ftypes[0]='email';
+}(jQuery));
+var $mcj = jQuery.noConflict(true);
+</script>
+
+<script>
+// nav scroll state
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 40);
+});
+// reveal on scroll
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.15 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+
+<script>
+function handleSignup(e) {
+  // Let the form POST silently into the hidden iframe (keeps Mailchimp signup working)
+  // then immediately reveal the download, no waiting on an email.
+  setTimeout(() => {
+    document.querySelector('.gate-form-wrap').style.display = 'none';
+    document.getElementById('gateNote').style.display = 'none';
+    document.getElementById('gateSuccess').classList.add('visible');
+  }, 600);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,2988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phase 2 — Strength & Power · Coach Cali</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d1117;
+  --bg2: #131a23;
+  --card: #161d27;
+  --border: #232c38;
+  --text: #f0ece4;
+  --muted: #8a94a3;
+  --dim: #565f6c;
+  --blue: #4a8db5;
+  --orange: #c95f1a;
+  --teal: #5ba88c;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  line-height: 1.55;
+}
+h1,h2,h3,h4 { font-family: 'Barlow Condensed', sans-serif; }
+a { color: inherit; }
+
+/* ── TOP BAR ── */
+.topbar {
+  position: sticky; top: 0; z-index: 40;
+  background: rgba(13,17,23,0.92);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 24px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.tb-name { font-weight: 700; font-size: 18px; letter-spacing: 0.5px; }
+.tb-name b { color: var(--orange); }
+.tb-right { display: flex; align-items: center; gap: 14px; }
+.tb-week { font-size: 13px; color: var(--muted); }
+.tb-track-btn {
+  padding: 8px 14px;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 6px; color: var(--text);
+  font-size: 13px; font-weight: 600; cursor: pointer;
+}
+.tb-track-btn:hover { border-color: var(--blue); }
+
+/* ── WEEK HERO ── */
+.week-hero {
+  padding: 48px 24px 32px;
+  max-width: 920px; margin: 0 auto;
+}
+.wh-phase { font-size: 13px; color: var(--blue); font-weight: 600; margin-bottom: 8px; }
+.wh-title { font-size: clamp(36px, 6vw, 56px); font-weight: 700; line-height: 0.95; margin-bottom: 12px; }
+.wh-desc { color: var(--muted); max-width: 560px; font-size: 15px; line-height: 1.7; }
+
+/* ── WEEK NAV STRIP ── */
+.weeknav {
+  display: flex; gap: 6px; overflow-x: auto;
+  padding: 0 24px 28px; max-width: 920px; margin: 0 auto;
+}
+.wn-btn {
+  flex-shrink: 0; padding: 8px 14px;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 6px; color: var(--muted);
+  font-size: 13px; font-weight: 500; cursor: pointer;
+}
+.wn-btn.active { background: var(--blue); border-color: var(--blue); color: #fff; }
+
+.week-page { display: none; }
+.week-page.active { display: block; }
+
+/* ── DAY SECTION ── */
+.day-section { max-width: 920px; margin: 0 auto; padding: 0 24px 56px; }
+.day-head {
+  display: flex; align-items: baseline; gap: 14px;
+  margin: 40px 0 18px; padding-bottom: 12px;
+  border-bottom: 2px solid var(--border);
+}
+.day-head:first-child { margin-top: 0; }
+.day-num { font-size: 32px; font-weight: 700; color: var(--blue); line-height: 1; }
+.day-name { font-size: 22px; font-weight: 600; }
+.day-type { margin-left: auto; font-size: 12px; color: var(--muted); padding: 4px 10px; border: 1px solid var(--border); border-radius: 20px; }
+
+/* ── COMPLETE CHECKBOX ── */
+.day-complete {
+  display: flex; align-items: center; gap: 8px;
+  margin: -8px 0 16px;
+}
+.day-complete input { width: 16px; height: 16px; accent-color: var(--teal); cursor: pointer; }
+.day-complete label { font-size: 12px; color: var(--muted); cursor: pointer; }
+.day-section.completed .day-head { opacity: 0.55; }
+
+/* ── BLOCK ── */
+.block { margin-bottom: 22px; }
+.block-label { font-size: 12px; color: var(--dim); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+
+/* ── EXERCISE CARD ── */
+.ex-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 10px; overflow: hidden; }
+.ex-row { display: flex; align-items: center; gap: 14px; padding: 14px 16px; cursor: pointer; }
+.ex-sets { font-weight: 700; color: var(--blue); font-size: 15px; min-width: 64px; font-variant-numeric: tabular-nums; }
+.ex-name { font-weight: 600; font-size: 15px; flex: 1; }
+.ex-chevron { color: var(--dim); font-size: 13px; transition: transform 0.15s; }
+.ex-card.open .ex-chevron { transform: rotate(180deg); }
+
+.ex-weight { display: flex; align-items: center; gap: 5px; flex-shrink: 0; position: relative; }
+.ex-weight input {
+  width: 56px; padding: 6px 8px; background: var(--bg);
+  border: 1px solid var(--border); border-radius: 4px; color: var(--text);
+  font-size: 13px; text-align: center; font-family: 'Inter', sans-serif;
+}
+.ex-weight input:focus { outline: none; border-color: var(--blue); }
+.ex-weight input.improved { border-color: var(--teal); }
+.ex-weight input.lower { border-color: #c9573f; }
+.ex-weight span { font-size: 11px; color: var(--dim); }
+.ex-arrow { font-size: 12px; min-width: 12px; }
+
+.ex-detail { display: none; padding: 0 16px 18px; border-top: 1px solid var(--border); }
+.ex-card.open .ex-detail { display: block; padding-top: 16px; }
+.ex-cue { font-size: 14px; color: var(--muted); line-height: 1.7; margin-bottom: 16px; }
+.ex-cue strong { color: var(--text); }
+
+.video-panel { border-radius: 6px; overflow: hidden; background: #000; margin-bottom: 10px; }
+.video-panel iframe { display: block; width: 100%; aspect-ratio: 16/9; border: 0; }
+.watch-link { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--blue); font-weight: 600; text-decoration: none; }
+
+/* ── PROGRESSION PANEL ── */
+.prog-panel { margin-top: 12px; border-top: 1px solid var(--border); padding-top: 12px; }
+.prog-panel-toggle {
+  font-size: 12px; color: var(--dim); cursor: pointer;
+  display: flex; align-items: center; gap: 6px; font-weight: 600;
+}
+.prog-panel-body { display: none; margin-top: 10px; font-size: 13px; }
+.prog-panel-body.open { display: block; }
+.prog-row { display: flex; justify-content: space-between; padding: 4px 0; color: var(--muted); }
+.prog-row span:last-child { font-weight: 600; }
+.prog-row .up { color: var(--teal); }
+.prog-row .down { color: #c9573f; }
+
+/* ── WEEK NOTES + RPE ── */
+.week-extras { max-width: 920px; margin: 0 auto; padding: 0 24px 56px; }
+.rpe-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+.rpe-label { font-size: 13px; color: var(--dim); font-weight: 600; }
+.rpe-btn {
+  width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--border);
+  background: none; color: var(--muted); font-size: 12px; cursor: pointer;
+}
+.rpe-btn.selected { background: var(--blue); border-color: var(--blue); color: #fff; }
+.week-notes { width: 100%; background: var(--card); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-family: 'Inter', sans-serif; font-size: 14px; padding: 12px 14px; resize: vertical; min-height: 70px; }
+.week-notes::placeholder { color: var(--dim); }
+
+/* ── TRACKER MODAL ── */
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 100; align-items: center; justify-content: center; padding: 20px; }
+.modal-overlay.open { display: flex; }
+.modal { background: var(--card); border: 1px solid var(--border); border-radius: 10px; width: 100%; max-width: 640px; max-height: 82vh; display: flex; flex-direction: column; overflow: hidden; }
+.modal-head { padding: 18px 22px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.modal-head h3 { font-size: 20px; }
+.modal-close { background: none; border: none; color: var(--muted); font-size: 20px; cursor: pointer; }
+.modal-body { padding: 20px 22px; overflow-y: auto; }
+.stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px,1fr)); gap: 10px; margin-bottom: 20px; }
+.stat-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 6px; padding: 14px; text-align: center; }
+.stat-num { font-size: 26px; font-weight: 700; }
+.stat-label { font-size: 11px; color: var(--dim); }
+.chart-bars { display: flex; align-items: flex-end; gap: 4px; height: 70px; margin-top: 8px; }
+.chart-bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; }
+.chart-bar { width: 100%; background: var(--blue); border-radius: 2px 2px 0 0; min-height: 3px; }
+.chart-label { font-size: 9px; color: var(--dim); }
+.lift-chart-title { font-size: 13px; font-weight: 600; margin: 18px 0 6px; }
+.btn-row { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
+.btn-sm { padding: 8px 14px; background: var(--bg2); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-size: 12px; cursor: pointer; }
+.btn-sm.danger { color: #c9573f; }
+
+@media (max-width: 560px) {
+  .week-hero { padding: 32px 18px 24px; }
+  .day-section { padding: 0 18px 40px; }
+  .week-extras { padding: 0 18px 40px; }
+  .ex-row { flex-wrap: wrap; }
+  .ex-weight { margin-left: auto; }
+  .tb-week { display: none; }
+}
+
+.hero-box {
+  max-width: 920px; margin: 0 auto; padding: 8px 24px 0;
+}
+.hero-card {
+  background: linear-gradient(135deg, rgba(74,141,181,0.08), rgba(201,95,26,0.05));
+  border: 1px solid var(--border); border-radius: 10px;
+  padding: 24px 26px; margin-bottom: 8px;
+}
+.hero-eyebrow {
+  font-size: 11px; font-weight: 700; letter-spacing: 1px;
+  text-transform: uppercase; margin-bottom: 8px;
+}
+.hero-pitch { font-size: 14px; color: var(--muted); line-height: 1.7; }
+.hero-stats { display: flex; gap: 20px; margin-top: 14px; flex-wrap: wrap; }
+.hero-stat { font-size: 12px; color: var(--dim); }
+.hero-stat b { color: var(--text); font-weight: 700; }
+
+.crosspromo {
+  max-width: 920px; margin: 40px auto 0; padding: 24px;
+  border-top: 1px solid var(--border);
+}
+.crosspromo-label { font-size: 11px; color: var(--dim); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+.crosspromo-links { display: flex; gap: 10px; flex-wrap: wrap; }
+.crosspromo-link {
+  flex: 1; min-width: 200px;
+  background: var(--card); border: 1px solid var(--border); border-radius: 8px;
+  padding: 14px 16px; text-decoration: none; color: var(--text);
+}
+.crosspromo-link:hover { border-color: var(--blue); }
+.crosspromo-link .cp-tag { font-size: 10px; color: var(--dim); text-transform: uppercase; margin-bottom: 4px; }
+.crosspromo-link .cp-name { font-size: 15px; font-weight: 700; }
+.crosspromo-link.current { opacity: 0.4; pointer-events: none; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="tb-name">COACH CALI <b>·</b> TPB</div>
+  <div class="tb-right">
+    <div class="tb-week">Phase 2 · Strength &amp; Power</div>
+    <button class="tb-track-btn" onclick="openTracker()">Progress</button>
+  </div>
+</div>
+
+<div class="week-hero">
+  <div class="wh-phase">Phase 02 — Strength &amp; Power</div>
+  <h1 class="wh-title">Weeks 7–12</h1>
+  <p class="wh-desc">Six weeks converting raw strength into athletic power. Each week pairs a heavy strength session with a dedicated power session — Olympic lifting, plyometrics, and concentric-only work. Week 12 is a full testing week to measure exactly how far you've come.</p>
+</div>
+
+
+<div class="hero-box">
+  <div class="hero-card">
+    <div class="hero-eyebrow" style="color:var(--orange)">Strength &amp; Power</div>
+    <p class="hero-pitch">Convert raw strength into athletic explosiveness. Olympic lifting, plyometrics, and contrast training pair heavy strength work with high-speed power output. Ends with a full testing week so you can measure exactly what changed.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><b>6</b> weeks</div>
+      <div class="hero-stat"><b>4</b> days/week</div>
+      <div class="hero-stat"><b>Commercial gym</b> required</div>
+      <div class="hero-stat"><b>Solid strength base</b> recommended</div>
+    </div>
+  </div>
+</div>
+
+<div class="weeknav" id="weeknav">
+  <button class="wn-btn active" onclick="showWeek(7)">Week 7</button>
+  <button class="wn-btn" onclick="showWeek(8)">Week 8</button>
+  <button class="wn-btn" onclick="showWeek(9)">Week 9</button>
+  <button class="wn-btn" onclick="showWeek(10)">Week 10</button>
+  <button class="wn-btn" onclick="showWeek(11)">Week 11</button>
+  <button class="wn-btn" onclick="showWeek(12)">Week 12</button>
+</div>
+
+<!-- WEEK PAGES GET INSERTED HERE -->
+<div class="week-page active" id="week-7">
+
+<div class="day-section">
+  <div class="day-head"><div class="day-num">01</div><div class="day-name">Full Body Press</div><div class="day-type">Strength</div></div>
+  <div class="day-complete"><input type="checkbox" data-id="week7-d1"><label>Mark session complete</label></div>
+
+  <div class="block"><div class="block-label">Block A · 5 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6/4/1/1/1</div><div class="ex-name">BB Back Squat</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <div class="video-panel"><iframe src="https://www.youtube.com/embed/8PMjqgR8Wa8" title="Barbell back squat tutorial" allowfullscreen loading="lazy"></iframe></div>
+        <p class="ex-cue">This is a ramping set — weight goes up as reps drop. Start at a weight that feels like 6 genuinely challenging reps, then add load each set as reps fall to 4, then 1, 1, 1. <strong>The final three singles should feel heavy but controlled</strong> — this is building toward true max strength, not grinding out ugly reps.</p>
+        <a class="watch-link" href="https://www.youtube.com/watch?v=8PMjqgR8Wa8" target="_blank">Watch full video ↗</a>
+        <div class="prog-panel"><div class="prog-panel-toggle" onclick="event.stopPropagation();toggleProg(this)">vs last week ▾</div><div class="prog-panel-body"></div></div>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6/4/1/1</div><div class="ex-name">BB Bench Press</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <div class="video-panel"><iframe src="https://www.youtube.com/embed/vcBig73ojpE" title="Barbell bench press tutorial" allowfullscreen loading="lazy"></iframe></div>
+        <p class="ex-cue">Same ramping structure as the squat. Build weight across the sets as reps decrease. Take longer rests as the weight climbs — 3-4 minutes on the final two singles so you're pressing fresh, not fatigued.</p>
+        <a class="watch-link" href="https://www.youtube.com/watch?v=vcBig73ojpE" target="_blank">Watch full video ↗</a>
+        <div class="prog-panel"><div class="prog-panel-toggle" onclick="event.stopPropagation();toggleProg(this)">vs last week ▾</div><div class="prog-panel-body"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block"><div class="block-label">Block B · 3 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">15 reps</div><div class="ex-name">Leg Extension</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Higher rep work here — this comes after your heavy squat singles so it's about finishing volume on the quads, not chasing more max strength. Full range, controlled tempo.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=leg+extension+machine+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">15 reps</div><div class="ex-name">Dips</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Parallel bar dips. Slight forward lean for more chest involvement, more upright for triceps. Full range — upper arms parallel to the floor at the bottom.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=dips+tutorial+proper+form" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">10 reps</div><div class="ex-name">GHD Sit Ups</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Full range sit-up on the GHD — arms overhead at the bottom, sit all the way up. This has significant hip flexor involvement, so build into full reps gradually if it's new to you.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=GHD+sit+up+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="block"><div class="block-label">Block C · 3 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">20 reps</div><div class="ex-name">Seated Calf Raise</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Higher reps, lighter load compared to Phase 1. Full range every rep — deep stretch at the bottom, full contraction at the top.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=seated+calf+raise+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">20 reps</div><div class="ex-name">DB JM Press</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">A hybrid between a bench press and skull crusher. Lower the dumbbells toward your chin/throat with elbows flared slightly, then press back up. Great tricep builder with less elbow stress than a straight skull crusher.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=JM+press+tricep+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">15 reps</div><div class="ex-name">Strict Twist</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Standing or seated trunk rotation using a bar or cable, keeping the movement slow and controlled — "strict" means no momentum, no swinging. Rotate through your trunk, not just your arms.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=standing+trunk+rotation+strict+twist" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="day-section">
+  <div class="day-head"><div class="day-num">02</div><div class="day-name">Press / Power</div><div class="day-type">Power</div></div>
+  <div class="day-complete"><input type="checkbox" data-id="week7-d2"><label>Mark session complete</label></div>
+
+  <div class="block"><div class="block-label">Block A · 3 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6 reps</div><div class="ex-name">BB Split Squat (concentric only)</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Start from the bottom position of a split squat and drive up explosively — there's no eccentric lowering phase, you step or drop back to reset each rep. This isolates the concentric power output without the fatigue of a full eccentric-concentric cycle. Focus purely on speed of the upward drive.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=concentric+only+split+squat+power" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6 reps</div><div class="ex-name">Smith Machine Chest Press Throw</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Explosive press on the smith machine — push the bar as fast as possible so it briefly leaves your hands at the top, like a throw. Light load, maximum intent every rep. This trains rate of force development, not raw strength.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=smith+machine+chest+press+throw+power" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">8 reps</div><div class="ex-name">Cable Woodchop</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Cable set high, chop diagonally down across your body, driven by rotating through your hips and trunk. Controlled return each rep.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=cable+woodchop+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="block"><div class="block-label">Block B · 3 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6 reps</div><div class="ex-name">BB Step Up to Hip Flex</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Step up onto a box carrying a barbell, then drive your trailing knee up to hip height at the top — like a running knee drive under load. This trains single-leg power and hip flexion strength together, both critical for the sprint work coming in Phase 3.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=barbell+step+up+hip+flexion+power" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6 reps</div><div class="ex-name">MB Squat to Throw</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Squat down holding a medicine ball, then explode up and throw the ball forward or overhead using the momentum from your legs. Full-body power transfer exercise — the ball should leave your hands with real force.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=medicine+ball+squat+to+throw+power" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">10 reps</div><div class="ex-name">Hanging Leg Raises</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Dead hang, raise straight legs to hip height using your abs. Control the lowering. Harder than knee raises due to the longer lever — drop to bent knees if straight legs cause swinging.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=hanging+leg+raise+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="block"><div class="block-label">Block C · 3 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6 reps</div><div class="ex-name">Landmine Lateral Lunge</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Barbell anchored in a landmine, held at your chest. Step laterally into a side lunge holding the bar, then drive back to standing. Trains the frontal plane movement pattern that's often missing from standard programming but critical for change of direction.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=landmine+lateral+lunge+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">15 reps</div><div class="ex-name">Weighted Push Up</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Standard push-up with a plate or weighted vest for added load. Full range — chest to just above the floor, full lockout at the top. Keep your body in a straight line throughout.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=weighted+push+up+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="day-section">
+  <div class="day-head"><div class="day-num">03</div><div class="day-name">Full Body Pull</div><div class="day-type">Strength</div></div>
+  <div class="day-complete"><input type="checkbox" data-id="week7-d3"><label>Mark session complete</label></div>
+
+  <div class="block"><div class="block-label">Block A · 4 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6/4/3/1</div><div class="ex-name">Trap Bar Deadlift</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <div class="video-panel"><iframe src="https://www.youtube.com/embed/EsqwERaSTMI" title="Trap bar deadlift tutorial" allowfullscreen loading="lazy"></iframe></div>
+        <p class="ex-cue">Deadlift performed inside a hex/trap bar — more quad-dominant and more forgiving on your lower back than a conventional deadlift. Ramping set structure again: build weight as reps drop. <strong>Keep your chest tall and drive through the whole foot</strong> — the more upright torso position is the main technical difference from a conventional pull.</p>
+        <a class="watch-link" href="https://www.youtube.com/watch?v=EsqwERaSTMI" target="_blank">Watch full video ↗</a>
+        <div class="prog-panel"><div class="prog-panel-toggle" onclick="event.stopPropagation();toggleProg(this)">vs last week ▾</div><div class="prog-panel-body"></div></div>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6/4/3/1</div><div class="ex-name">BB Seal Row</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Barbell row lying face-down on a bench elevated on blocks. This removes any body English — there's no leg drive or torso swing to help you, just pure upper back and lat effort. Row the bar to your chest, control the lowering.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=barbell+seal+row+tutorial" target="_blank">Search video ↗</a>
+        <div class="prog-panel"><div class="prog-panel-toggle" onclick="event.stopPropagation();toggleProg(this)">vs last week ▾</div><div class="prog-panel-body"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block"><div class="block-label">Block B · 3 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">15 reps</div><div class="ex-name">Hamstring Curl</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Lying hamstring curl. Curl your heels toward your glutes, squeeze at the top, control the release. Higher volume here since you're not maxing out on the trap bar deadlift's hamstring demand this time.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=lying+hamstring+curl+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">15 reps</div><div class="ex-name">Lat Pull Down</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Wide grip, pull down to your upper chest driving your elbows down and back. Control the return to a full overhead stretch.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=lat+pulldown+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">20m</div><div class="ex-name">Trap Bar Carry</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Loaded carry using the trap bar — stand tall inside the frame, walk the distance keeping your chest up and core braced. Trains grip, posture, and loaded gait — foundational for on-field durability.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=trap+bar+carry+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="block"><div class="block-label">Block C · 3 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">20 reps</div><div class="ex-name">Smith Machine Calf Raise</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Standing calf raise loaded through the smith machine. Full range — heel dropping below the platform at the bottom.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=smith+machine+calf+raise+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">30 reps</div><div class="ex-name">DB Biceps Curl</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">High rep dumbbell curl to finish the session. Keep your elbows at your sides, curl to full contraction, control the negative. This should burn by the last set.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=dumbbell+bicep+curl+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="day-section">
+  <div class="day-head"><div class="day-num">04</div><div class="day-name">Pull / Power</div><div class="day-type">Power</div></div>
+  <div class="day-complete"><input type="checkbox" data-id="week7-d4"><label>Mark session complete</label></div>
+
+  <div class="block"><div class="block-label">Block A · 3 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6 reps</div><div class="ex-name">BB Cleans</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <div class="video-panel"><iframe src="https://www.youtube.com/embed/MlGgLbD59yk" title="Power clean tutorial" allowfullscreen loading="lazy"></iframe></div>
+        <p class="ex-cue">Power clean — bar travels from the floor to your front rack in one explosive pull. Full triple extension through your ankles, knees, and hips at the top, then drop underneath to catch the bar on your shoulders. <strong>This is your primary Olympic lift for the next 6 weeks</strong> — technique matters more than load here. Start light and let the pattern earn heavier weight.</p>
+        <a class="watch-link" href="https://www.youtube.com/watch?v=MlGgLbD59yk" target="_blank">Watch full video ↗</a>
+        <div class="prog-panel"><div class="prog-panel-toggle" onclick="event.stopPropagation();toggleProg(this)">vs last week ▾</div><div class="prog-panel-body"></div></div>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6 reps</div><div class="ex-name">Chin Ups</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Underhand grip pull-up. Same full range as a pull-up — full hang at the bottom, chin over the bar at the top — with slightly more bicep involvement due to the grip.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=chin+up+underhand+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">12 reps</div><div class="ex-name">Oblique Crunches</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Each side. Side-lying or on a decline, crunch by bringing your ribcage toward your hip on one side. Keep it controlled — this is a rotation and lateral flexion exercise, not a speed exercise.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=oblique+crunch+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="block"><div class="block-label">Block B · 3 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">5 reps</div><div class="ex-name">SL GHD Back Extension</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Single leg GHD back extension — one leg hooked in, the other extended or lifted. Trains each side of your posterior chain independently, exposing and correcting asymmetries.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=single+leg+GHD+back+extension" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6 reps</div><div class="ex-name">Explosive BW Inverted Row</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Bodyweight inverted row performed with maximum intent — pull explosively so your chest briefly leaves the bar path at the top. This is the pulling equivalent of a plyo push-up, training upper body power.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=explosive+inverted+row+power" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">10 reps</div><div class="ex-name">Cable Pallof Press</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Anti-rotation press — cable at chest height, press straight out and hold briefly before returning. The resistance pulls you sideways; your job is to resist rotating. One of the best core stability exercises available.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=pallof+press+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="block"><div class="block-label">Block C · 3 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">20s</div><div class="ex-name">Cable Abduction ISO</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Hold your leg out to the side against the cable resistance for the full duration rather than doing reps. This isometric hold builds hip stability endurance that supports change of direction under fatigue.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=cable+hip+abduction+isometric+hold" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">8 reps</div><div class="ex-name">Zottman Curl</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Curl up with an underhand grip, rotate to an overhand grip at the top, then lower slowly with the overhand grip. Trains your biceps and forearm extensors together — useful for grip health with all the carrying and hanging work in this program.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=zottman+curl+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="week-extras">
+  <div class="rpe-row"><span class="rpe-label">Week RPE:</span>
+    <button class="rpe-btn" data-rpe="1">1</button><button class="rpe-btn" data-rpe="2">2</button><button class="rpe-btn" data-rpe="3">3</button><button class="rpe-btn" data-rpe="4">4</button><button class="rpe-btn" data-rpe="5">5</button><button class="rpe-btn" data-rpe="6">6</button><button class="rpe-btn" data-rpe="7">7</button><button class="rpe-btn" data-rpe="8">8</button><button class="rpe-btn" data-rpe="9">9</button><button class="rpe-btn" data-rpe="10">10</button>
+  </div>
+  <textarea class="week-notes" placeholder="How did Week 7 feel? First week of power work — any notes on the Olympic lifting technique..."></textarea>
+</div>
+
+</div>
+
+<div class="week-page" id="week-8">
+
+<div class="day-section">
+  <div class="day-head"><div class="day-num">01</div><div class="day-name">Full Body Press</div><div class="day-type">Strength</div></div>
+  <div class="day-complete"><input type="checkbox" data-id="week-8-d1"><label>Mark session complete</label></div>
+
+  <div class="block"><div class="block-label">Block A · 4 sets — paired with jumps</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">8/6/6/4</div><div class="ex-name">BB Back Squat</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <div class="video-panel"><iframe src="https://www.youtube.com/embed/8PMjqgR8Wa8" title="Barbell back squat tutorial" allowfullscreen loading="lazy"></iframe></div>
+        <p class="ex-cue">Straight sets this week rather than a ramp to a single. Pair each set with 5 box jumps — do your squat set, rest briefly, then jump, then rest before the next squat set. <strong>The jumps train the same triple extension pattern at high speed</strong> that the squat trains under load — that pairing is the whole point of this phase.</p>
+        <a class="watch-link" href="https://www.youtube.com/watch?v=8PMjqgR8Wa8" target="_blank">Watch full video ↗</a>
+        <div class="prog-panel"><div class="prog-panel-toggle" onclick="event.stopPropagation();toggleProg(this)">vs last week ▾</div><div class="prog-panel-body"></div></div>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">5 reps</div><div class="ex-name">Box Jump</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Jump onto a box (around 75cm), land softly with your knees tracking over your toes. Step down — never jump down, that's where knees get hurt for no benefit. The focus is explosive intent on the jump up, not chasing a taller box.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=box+jump+tutorial+form" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">8/6/6/4</div><div class="ex-name">BB Bench Press</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <div class="video-panel"><iframe src="https://www.youtube.com/embed/vcBig73ojpE" title="Barbell bench press tutorial" allowfullscreen loading="lazy"></iframe></div>
+        <p class="ex-cue">Same idea — straight sets across 4, paired with med ball chest throws for upper body power. Do your bench set, rest, then throw the ball as hard as you can, rest, next bench set.</p>
+        <a class="watch-link" href="https://www.youtube.com/watch?v=vcBig73ojpE" target="_blank">Watch full video ↗</a>
+        <div class="prog-panel"><div class="prog-panel-toggle" onclick="event.stopPropagation();toggleProg(this)">vs last week ▾</div><div class="prog-panel-body"></div></div>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">5 reps</div><div class="ex-name">MB Chest Throw</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Medicine ball thrown from your chest against a wall or to a partner, maximum effort every throw. Not a slow controlled push — throw it as hard as you can and reset.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=medicine+ball+chest+throw+power" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="block"><div class="block-label">Block B · 3 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">12 reps</div><div class="ex-name">Leg Extension</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Higher rep work here — this comes after your heavy squat singles so it's about finishing volume on the quads, not chasing more max strength. Full range, controlled tempo.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=leg+extension+machine+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">10 reps</div><div class="ex-name">Weighted Dips</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Same dip pattern, now with added weight via a dipping belt. Full range — upper arms parallel to the floor at the bottom, full lockout at the top.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=weighted+dips+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">15 reps</div><div class="ex-name">Seated Calf Raise</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Full range every rep — deep stretch at the bottom, full contraction at the top.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=seated+calf+raise+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+
+  </div>
+
+<div class="day-section">
+  <div class="day-head"><div class="day-num">02</div><div class="day-name">Press / Power</div><div class="day-type">Power</div></div>
+  <div class="day-complete"><input type="checkbox" data-id="week-8-d2"><label>Mark session complete</label></div>
+
+  <div class="block"><div class="block-label">Block A · 3 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6 reps</div><div class="ex-name">BB Split Squat (concentric only)</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Start from the bottom position of a split squat and drive up explosively — there's no eccentric lowering phase, you step or drop back to reset each rep. This isolates the concentric power output without the fatigue of a full eccentric-concentric cycle. Focus purely on speed of the upward drive.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=concentric+only+split+squat+power" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6 reps</div><div class="ex-name">Smith Machine Chest Press Throw</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Explosive press on the smith machine — push the bar as fast as possible so it briefly leaves your hands at the top, like a throw. Light load, maximum intent every rep. This trains rate of force development, not raw strength.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=smith+machine+chest+press+throw+power" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">8 reps</div><div class="ex-name">Cable Woodchop</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Cable set high, chop diagonally down across your body, driven by rotating through your hips and trunk. Controlled return each rep.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=cable+woodchop+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="block"><div class="block-label">Block B · 3 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6 reps</div><div class="ex-name">BB Step Up to Hip Flex</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Step up onto a box carrying a barbell, then drive your trailing knee up to hip height at the top — like a running knee drive under load. This trains single-leg power and hip flexion strength together, both critical for the sprint work coming in Phase 3.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=barbell+step+up+hip+flexion+power" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6 reps</div><div class="ex-name">MB Squat to Throw</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Squat down holding a medicine ball, then explode up and throw the ball forward or overhead using the momentum from your legs. Full-body power transfer exercise — the ball should leave your hands with real force.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=medicine+ball+squat+to+throw+power" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">10 reps</div><div class="ex-name">Hanging Leg Raises</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Dead hang, raise straight legs to hip height using your abs. Control the lowering. Harder than knee raises due to the longer lever — drop to bent knees if straight legs cause swinging.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=hanging+leg+raise+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="block"><div class="block-label">Block C · 3 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6 reps</div><div class="ex-name">Landmine Lateral Lunge</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Barbell anchored in a landmine, held at your chest. Step laterally into a side lunge holding the bar, then drive back to standing. Trains the frontal plane movement pattern that's often missing from standard programming but critical for change of direction.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=landmine+lateral+lunge+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">15 reps</div><div class="ex-name">Weighted Push Up</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Standard push-up with a plate or weighted vest for added load. Full range — chest to just above the floor, full lockout at the top. Keep your body in a straight line throughout.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=weighted+push+up+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="day-section">
+  <div class="day-head"><div class="day-num">03</div><div class="day-name">Full Body Pull</div><div class="day-type">Strength</div></div>
+  <div class="day-complete"><input type="checkbox" data-id="week-8-d3"><label>Mark session complete</label></div>
+
+  <div class="block"><div class="block-label">Block A · 4 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6/4/3/1</div><div class="ex-name">Trap Bar Deadlift</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <div class="video-panel"><iframe src="https://www.youtube.com/embed/EsqwERaSTMI" title="Trap bar deadlift tutorial" allowfullscreen loading="lazy"></iframe></div>
+        <p class="ex-cue">Deadlift performed inside a hex/trap bar — more quad-dominant and more forgiving on your lower back than a conventional deadlift. Ramping set structure again: build weight as reps drop. <strong>Keep your chest tall and drive through the whole foot</strong> — the more upright torso position is the main technical difference from a conventional pull.</p>
+        <a class="watch-link" href="https://www.youtube.com/watch?v=EsqwERaSTMI" target="_blank">Watch full video ↗</a>
+        <div class="prog-panel"><div class="prog-panel-toggle" onclick="event.stopPropagation();toggleProg(this)">vs last week ▾</div><div class="prog-panel-body"></div></div>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6/4/3/1</div><div class="ex-name">BB Seal Row</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Barbell row lying face-down on a bench elevated on blocks. This removes any body English — there's no leg drive or torso swing to help you, just pure upper back and lat effort. Row the bar to your chest, control the lowering.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=barbell+seal+row+tutorial" target="_blank">Search video ↗</a>
+        <div class="prog-panel"><div class="prog-panel-toggle" onclick="event.stopPropagation();toggleProg(this)">vs last week ▾</div><div class="prog-panel-body"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block"><div class="block-label">Block B · 3 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">15 reps</div><div class="ex-name">Hamstring Curl</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Lying hamstring curl. Curl your heels toward your glutes, squeeze at the top, control the release. Higher volume here since you're not maxing out on the trap bar deadlift's hamstring demand this time.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=lying+hamstring+curl+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">15 reps</div><div class="ex-name">Lat Pull Down</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Wide grip, pull down to your upper chest driving your elbows down and back. Control the return to a full overhead stretch.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=lat+pulldown+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">20m</div><div class="ex-name">Trap Bar Carry</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Loaded carry using the trap bar — stand tall inside the frame, walk the distance keeping your chest up and core braced. Trains grip, posture, and loaded gait — foundational for on-field durability.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=trap+bar+carry+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="block"><div class="block-label">Block C · 3 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">20 reps</div><div class="ex-name">Smith Machine Calf Raise</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Standing calf raise loaded through the smith machine. Full range — heel dropping below the platform at the bottom.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=smith+machine+calf+raise+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">30 reps</div><div class="ex-name">DB Biceps Curl</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">High rep dumbbell curl to finish the session. Keep your elbows at your sides, curl to full contraction, control the negative. This should burn by the last set.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=dumbbell+bicep+curl+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="day-section">
+  <div class="day-head"><div class="day-num">04</div><div class="day-name">Pull / Power</div><div class="day-type">Power</div></div>
+  <div class="day-complete"><input type="checkbox" data-id="week-8-d4"><label>Mark session complete</label></div>
+
+  <div class="block"><div class="block-label">Block A · 3 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6 reps</div><div class="ex-name">BB Cleans</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <div class="video-panel"><iframe src="https://www.youtube.com/embed/MlGgLbD59yk" title="Power clean tutorial" allowfullscreen loading="lazy"></iframe></div>
+        <p class="ex-cue">Power clean — bar travels from the floor to your front rack in one explosive pull. Full triple extension through your ankles, knees, and hips at the top, then drop underneath to catch the bar on your shoulders. <strong>This is your primary Olympic lift for the next 6 weeks</strong> — technique matters more than load here. Start light and let the pattern earn heavier weight.</p>
+        <a class="watch-link" href="https://www.youtube.com/watch?v=MlGgLbD59yk" target="_blank">Watch full video ↗</a>
+        <div class="prog-panel"><div class="prog-panel-toggle" onclick="event.stopPropagation();toggleProg(this)">vs last week ▾</div><div class="prog-panel-body"></div></div>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6 reps</div><div class="ex-name">Chin Ups</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Underhand grip pull-up. Same full range as a pull-up — full hang at the bottom, chin over the bar at the top — with slightly more bicep involvement due to the grip.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=chin+up+underhand+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">12 reps</div><div class="ex-name">Oblique Crunches</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Each side. Side-lying or on a decline, crunch by bringing your ribcage toward your hip on one side. Keep it controlled — this is a rotation and lateral flexion exercise, not a speed exercise.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=oblique+crunch+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="block"><div class="block-label">Block B · 3 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">5 reps</div><div class="ex-name">SL GHD Back Extension</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Single leg GHD back extension — one leg hooked in, the other extended or lifted. Trains each side of your posterior chain independently, exposing and correcting asymmetries.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=single+leg+GHD+back+extension" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6 reps</div><div class="ex-name">Explosive BW Inverted Row</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Bodyweight inverted row performed with maximum intent — pull explosively so your chest briefly leaves the bar path at the top. This is the pulling equivalent of a plyo push-up, training upper body power.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=explosive+inverted+row+power" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">10 reps</div><div class="ex-name">Cable Pallof Press</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Anti-rotation press — cable at chest height, press straight out and hold briefly before returning. The resistance pulls you sideways; your job is to resist rotating. One of the best core stability exercises available.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=pallof+press+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="block"><div class="block-label">Block C · 3 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">20s</div><div class="ex-name">Cable Abduction ISO</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Hold your leg out to the side against the cable resistance for the full duration rather than doing reps. This isometric hold builds hip stability endurance that supports change of direction under fatigue.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=cable+hip+abduction+isometric+hold" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">8 reps</div><div class="ex-name">Zottman Curl</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Curl up with an underhand grip, rotate to an overhand grip at the top, then lower slowly with the overhand grip. Trains your biceps and forearm extensors together — useful for grip health with all the carrying and hanging work in this program.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=zottman+curl+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="week-extras">
+  <div class="rpe-row"><span class="rpe-label">Week RPE:</span>
+    <button class="rpe-btn" data-rpe="1">1</button><button class="rpe-btn" data-rpe="2">2</button><button class="rpe-btn" data-rpe="3">3</button><button class="rpe-btn" data-rpe="4">4</button><button class="rpe-btn" data-rpe="5">5</button><button class="rpe-btn" data-rpe="6">6</button><button class="rpe-btn" data-rpe="7">7</button><button class="rpe-btn" data-rpe="8">8</button><button class="rpe-btn" data-rpe="9">9</button><button class="rpe-btn" data-rpe="10">10</button>
+  </div>
+  <textarea class="week-notes" placeholder="How did Week 7 feel? First week of power work — any notes on the Olympic lifting technique..."></textarea>
+</div>
+
+</div>
+
+<div class="week-page" id="week-9">
+
+<div class="day-section">
+  <div class="day-head"><div class="day-num">01</div><div class="day-name">Full Body Press</div><div class="day-type">Strength</div></div>
+  <div class="day-complete"><input type="checkbox" data-id="week-8-d1"><label>Mark session complete</label></div>
+
+  <div class="block"><div class="block-label">Block A · 4 sets — paired with jumps</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">8/6/6/4</div><div class="ex-name">BB Back Squat</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <div class="video-panel"><iframe src="https://www.youtube.com/embed/8PMjqgR8Wa8" title="Barbell back squat tutorial" allowfullscreen loading="lazy"></iframe></div>
+        <p class="ex-cue">Straight sets this week rather than a ramp to a single. Pair each set with 5 box jumps — do your squat set, rest briefly, then jump, then rest before the next squat set. <strong>The jumps train the same triple extension pattern at high speed</strong> that the squat trains under load — that pairing is the whole point of this phase.</p>
+        <a class="watch-link" href="https://www.youtube.com/watch?v=8PMjqgR8Wa8" target="_blank">Watch full video ↗</a>
+        <div class="prog-panel"><div class="prog-panel-toggle" onclick="event.stopPropagation();toggleProg(this)">vs last week ▾</div><div class="prog-panel-body"></div></div>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">5 reps</div><div class="ex-name">Box Jump</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Jump onto a box (around 75cm), land softly with your knees tracking over your toes. Step down — never jump down, that's where knees get hurt for no benefit. The focus is explosive intent on the jump up, not chasing a taller box.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=box+jump+tutorial+form" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">8/6/6/4</div><div class="ex-name">BB Bench Press</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <div class="video-panel"><iframe src="https://www.youtube.com/embed/vcBig73ojpE" title="Barbell bench press tutorial" allowfullscreen loading="lazy"></iframe></div>
+        <p class="ex-cue">Same idea — straight sets across 4, paired with med ball chest throws for upper body power. Do your bench set, rest, then throw the ball as hard as you can, rest, next bench set.</p>
+        <a class="watch-link" href="https://www.youtube.com/watch?v=vcBig73ojpE" target="_blank">Watch full video ↗</a>
+        <div class="prog-panel"><div class="prog-panel-toggle" onclick="event.stopPropagation();toggleProg(this)">vs last week ▾</div><div class="prog-panel-body"></div></div>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">5 reps</div><div class="ex-name">MB Chest Throw</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Medicine ball thrown from your chest against a wall or to a partner, maximum effort every throw. Not a slow controlled push — throw it as hard as you can and reset.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=medicine+ball+chest+throw+power" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="block"><div class="block-label">Block B · 3 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">12 reps</div><div class="ex-name">Leg Extension</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Higher rep work here — this comes after your heavy squat singles so it's about finishing volume on the quads, not chasing more max strength. Full range, controlled tempo.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=leg+extension+machine+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">10 reps</div><div class="ex-name">Weighted Dips</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Same dip pattern, now with added weight via a dipping belt. Full range — upper arms parallel to the floor at the bottom, full lockout at the top.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=weighted+dips+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">15 reps</div><div class="ex-name">Seated Calf Raise</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Full range every rep — deep stretch at the bottom, full contraction at the top.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=seated+calf+raise+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+
+  </div>
+
+<div class="day-section">
+  <div class="day-head"><div class="day-num">02</div><div class="day-name">Press / Power</div><div class="day-type">Power</div></div>
+  <div class="day-complete"><input type="checkbox" data-id="week-8-d2"><label>Mark session complete</label></div>
+
+  <div class="block"><div class="block-label">Block A · 3 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6 reps</div><div class="ex-name">BB Split Squat (concentric only)</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Start from the bottom position of a split squat and drive up explosively — there's no eccentric lowering phase, you step or drop back to reset each rep. This isolates the concentric power output without the fatigue of a full eccentric-concentric cycle. Focus purely on speed of the upward drive.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=concentric+only+split+squat+power" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6 reps</div><div class="ex-name">Smith Machine Chest Press Throw</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Explosive press on the smith machine — push the bar as fast as possible so it briefly leaves your hands at the top, like a throw. Light load, maximum intent every rep. This trains rate of force development, not raw strength.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=smith+machine+chest+press+throw+power" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">8 reps</div><div class="ex-name">Cable Woodchop</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Cable set high, chop diagonally down across your body, driven by rotating through your hips and trunk. Controlled return each rep.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=cable+woodchop+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="block"><div class="block-label">Block B · 3 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6 reps</div><div class="ex-name">BB Step Up to Hip Flex</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Step up onto a box carrying a barbell, then drive your trailing knee up to hip height at the top — like a running knee drive under load. This trains single-leg power and hip flexion strength together, both critical for the sprint work coming in Phase 3.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=barbell+step+up+hip+flexion+power" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6 reps</div><div class="ex-name">MB Squat to Throw</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Squat down holding a medicine ball, then explode up and throw the ball forward or overhead using the momentum from your legs. Full-body power transfer exercise — the ball should leave your hands with real force.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=medicine+ball+squat+to+throw+power" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">10 reps</div><div class="ex-name">Hanging Leg Raises</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Dead hang, raise straight legs to hip height using your abs. Control the lowering. Harder than knee raises due to the longer lever — drop to bent knees if straight legs cause swinging.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=hanging+leg+raise+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="block"><div class="block-label">Block C · 3 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6 reps</div><div class="ex-name">Landmine Lateral Lunge</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Barbell anchored in a landmine, held at your chest. Step laterally into a side lunge holding the bar, then drive back to standing. Trains the frontal plane movement pattern that's often missing from standard programming but critical for change of direction.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=landmine+lateral+lunge+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">15 reps</div><div class="ex-name">Weighted Push Up</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Standard push-up with a plate or weighted vest for added load. Full range — chest to just above the floor, full lockout at the top. Keep your body in a straight line throughout.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=weighted+push+up+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="day-section">
+  <div class="day-head"><div class="day-num">03</div><div class="day-name">Full Body Pull</div><div class="day-type">Strength</div></div>
+  <div class="day-complete"><input type="checkbox" data-id="week-8-d3"><label>Mark session complete</label></div>
+
+  <div class="block"><div class="block-label">Block A · 4 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6/4/3/1</div><div class="ex-name">Trap Bar Deadlift</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <div class="video-panel"><iframe src="https://www.youtube.com/embed/EsqwERaSTMI" title="Trap bar deadlift tutorial" allowfullscreen loading="lazy"></iframe></div>
+        <p class="ex-cue">Deadlift performed inside a hex/trap bar — more quad-dominant and more forgiving on your lower back than a conventional deadlift. Ramping set structure again: build weight as reps drop. <strong>Keep your chest tall and drive through the whole foot</strong> — the more upright torso position is the main technical difference from a conventional pull.</p>
+        <a class="watch-link" href="https://www.youtube.com/watch?v=EsqwERaSTMI" target="_blank">Watch full video ↗</a>
+        <div class="prog-panel"><div class="prog-panel-toggle" onclick="event.stopPropagation();toggleProg(this)">vs last week ▾</div><div class="prog-panel-body"></div></div>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6/4/3/1</div><div class="ex-name">BB Seal Row</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Barbell row lying face-down on a bench elevated on blocks. This removes any body English — there's no leg drive or torso swing to help you, just pure upper back and lat effort. Row the bar to your chest, control the lowering.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=barbell+seal+row+tutorial" target="_blank">Search video ↗</a>
+        <div class="prog-panel"><div class="prog-panel-toggle" onclick="event.stopPropagation();toggleProg(this)">vs last week ▾</div><div class="prog-panel-body"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block"><div class="block-label">Block B · 3 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">15 reps</div><div class="ex-name">Hamstring Curl</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Lying hamstring curl. Curl your heels toward your glutes, squeeze at the top, control the release. Higher volume here since you're not maxing out on the trap bar deadlift's hamstring demand this time.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=lying+hamstring+curl+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">15 reps</div><div class="ex-name">Lat Pull Down</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Wide grip, pull down to your upper chest driving your elbows down and back. Control the return to a full overhead stretch.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=lat+pulldown+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">20m</div><div class="ex-name">Trap Bar Carry</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Loaded carry using the trap bar — stand tall inside the frame, walk the distance keeping your chest up and core braced. Trains grip, posture, and loaded gait — foundational for on-field durability.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=trap+bar+carry+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="block"><div class="block-label">Block C · 3 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">20 reps</div><div class="ex-name">Smith Machine Calf Raise</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Standing calf raise loaded through the smith machine. Full range — heel dropping below the platform at the bottom.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=smith+machine+calf+raise+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">30 reps</div><div class="ex-name">DB Biceps Curl</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">High rep dumbbell curl to finish the session. Keep your elbows at your sides, curl to full contraction, control the negative. This should burn by the last set.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=dumbbell+bicep+curl+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="day-section">
+  <div class="day-head"><div class="day-num">04</div><div class="day-name">Pull / Power</div><div class="day-type">Power</div></div>
+  <div class="day-complete"><input type="checkbox" data-id="week-8-d4"><label>Mark session complete</label></div>
+
+  <div class="block"><div class="block-label">Block A · 3 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6 reps</div><div class="ex-name">BB Cleans</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <div class="video-panel"><iframe src="https://www.youtube.com/embed/MlGgLbD59yk" title="Power clean tutorial" allowfullscreen loading="lazy"></iframe></div>
+        <p class="ex-cue">Power clean — bar travels from the floor to your front rack in one explosive pull. Full triple extension through your ankles, knees, and hips at the top, then drop underneath to catch the bar on your shoulders. <strong>This is your primary Olympic lift for the next 6 weeks</strong> — technique matters more than load here. Start light and let the pattern earn heavier weight.</p>
+        <a class="watch-link" href="https://www.youtube.com/watch?v=MlGgLbD59yk" target="_blank">Watch full video ↗</a>
+        <div class="prog-panel"><div class="prog-panel-toggle" onclick="event.stopPropagation();toggleProg(this)">vs last week ▾</div><div class="prog-panel-body"></div></div>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6 reps</div><div class="ex-name">Chin Ups</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Underhand grip pull-up. Same full range as a pull-up — full hang at the bottom, chin over the bar at the top — with slightly more bicep involvement due to the grip.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=chin+up+underhand+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">12 reps</div><div class="ex-name">Oblique Crunches</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Each side. Side-lying or on a decline, crunch by bringing your ribcage toward your hip on one side. Keep it controlled — this is a rotation and lateral flexion exercise, not a speed exercise.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=oblique+crunch+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="block"><div class="block-label">Block B · 3 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">5 reps</div><div class="ex-name">SL GHD Back Extension</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Single leg GHD back extension — one leg hooked in, the other extended or lifted. Trains each side of your posterior chain independently, exposing and correcting asymmetries.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=single+leg+GHD+back+extension" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6 reps</div><div class="ex-name">Explosive BW Inverted Row</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Bodyweight inverted row performed with maximum intent — pull explosively so your chest briefly leaves the bar path at the top. This is the pulling equivalent of a plyo push-up, training upper body power.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=explosive+inverted+row+power" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">10 reps</div><div class="ex-name">Cable Pallof Press</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Anti-rotation press — cable at chest height, press straight out and hold briefly before returning. The resistance pulls you sideways; your job is to resist rotating. One of the best core stability exercises available.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=pallof+press+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="block"><div class="block-label">Block C · 3 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">20s</div><div class="ex-name">Cable Abduction ISO</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Hold your leg out to the side against the cable resistance for the full duration rather than doing reps. This isometric hold builds hip stability endurance that supports change of direction under fatigue.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=cable+hip+abduction+isometric+hold" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">8 reps</div><div class="ex-name">Zottman Curl</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Curl up with an underhand grip, rotate to an overhand grip at the top, then lower slowly with the overhand grip. Trains your biceps and forearm extensors together — useful for grip health with all the carrying and hanging work in this program.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=zottman+curl+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="week-extras">
+  <div class="rpe-row"><span class="rpe-label">Week RPE:</span>
+    <button class="rpe-btn" data-rpe="1">1</button><button class="rpe-btn" data-rpe="2">2</button><button class="rpe-btn" data-rpe="3">3</button><button class="rpe-btn" data-rpe="4">4</button><button class="rpe-btn" data-rpe="5">5</button><button class="rpe-btn" data-rpe="6">6</button><button class="rpe-btn" data-rpe="7">7</button><button class="rpe-btn" data-rpe="8">8</button><button class="rpe-btn" data-rpe="9">9</button><button class="rpe-btn" data-rpe="10">10</button>
+  </div>
+  <textarea class="week-notes" placeholder="How did Week 9 feel? Same structure as Week 8 — check whether the extra load is moving cleanly..."></textarea>
+</div>
+
+</div>
+
+<div class="week-page" id="week-10">
+
+<div class="day-section">
+  <div class="day-head"><div class="day-num">01</div><div class="day-name">Full Body Press</div><div class="day-type">Strength</div></div>
+  <div class="day-complete"><input type="checkbox" data-id="week-8-d1"><label>Mark session complete</label></div>
+
+  <div class="block"><div class="block-label">Block A · 4 sets — paired with jumps</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">8/6/6/4</div><div class="ex-name">BB Back Squat</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <div class="video-panel"><iframe src="https://www.youtube.com/embed/8PMjqgR8Wa8" title="Barbell back squat tutorial" allowfullscreen loading="lazy"></iframe></div>
+        <p class="ex-cue">Straight sets this week rather than a ramp to a single. Pair each set with 5 box jumps — do your squat set, rest briefly, then jump, then rest before the next squat set. <strong>The jumps train the same triple extension pattern at high speed</strong> that the squat trains under load — that pairing is the whole point of this phase.</p>
+        <a class="watch-link" href="https://www.youtube.com/watch?v=8PMjqgR8Wa8" target="_blank">Watch full video ↗</a>
+        <div class="prog-panel"><div class="prog-panel-toggle" onclick="event.stopPropagation();toggleProg(this)">vs last week ▾</div><div class="prog-panel-body"></div></div>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">5 reps</div><div class="ex-name">Banded CMJ</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Countermovement jump with a resistance band added around your hips or a barbell for accommodating resistance. The band increases the demand on rate of force development compared to a standard jump. Jump as high as possible every rep.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=banded+countermovement+jump+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">8/6/6/4</div><div class="ex-name">BB Bench Press</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <div class="video-panel"><iframe src="https://www.youtube.com/embed/vcBig73ojpE" title="Barbell bench press tutorial" allowfullscreen loading="lazy"></iframe></div>
+        <p class="ex-cue">Same idea — straight sets across 4, paired with med ball chest throws for upper body power. Do your bench set, rest, then throw the ball as hard as you can, rest, next bench set.</p>
+        <a class="watch-link" href="https://www.youtube.com/watch?v=vcBig73ojpE" target="_blank">Watch full video ↗</a>
+        <div class="prog-panel"><div class="prog-panel-toggle" onclick="event.stopPropagation();toggleProg(this)">vs last week ▾</div><div class="prog-panel-body"></div></div>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">5 reps</div><div class="ex-name">Plyo Push Up</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Explosive push-up where your hands leave the floor at the top — with or without a clap. Maximum speed on the push phase, land softly with slightly bent elbows to absorb the impact.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=plyometric+push+up+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="block"><div class="block-label">Block B · 3 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">10 reps</div><div class="ex-name">Leg Extension</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Higher rep work here — this comes after your heavy squat singles so it's about finishing volume on the quads, not chasing more max strength. Full range, controlled tempo.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=leg+extension+machine+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">8 reps</div><div class="ex-name">Weighted Dips</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Same dip pattern, heavier load than Weeks 8-9. Full range — upper arms parallel to the floor at the bottom, full lockout at the top.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=weighted+dips+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">12 reps</div><div class="ex-name">Seated Calf Raise</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Full range every rep — deep stretch at the bottom, full contraction at the top.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=seated+calf+raise+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+
+  </div>
+
+<div class="day-section">
+  <div class="day-head"><div class="day-num">02</div><div class="day-name">Press / Power</div><div class="day-type">Power</div></div>
+  <div class="day-complete"><input type="checkbox" data-id="week-8-d2"><label>Mark session complete</label></div>
+
+  <div class="block"><div class="block-label">Block A · 3 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6 reps</div><div class="ex-name">BB Split Squat (concentric only)</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Start from the bottom position of a split squat and drive up explosively — there's no eccentric lowering phase, you step or drop back to reset each rep. This isolates the concentric power output without the fatigue of a full eccentric-concentric cycle. Focus purely on speed of the upward drive.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=concentric+only+split+squat+power" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6 reps</div><div class="ex-name">Smith Machine Chest Press Throw</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Explosive press on the smith machine — push the bar as fast as possible so it briefly leaves your hands at the top, like a throw. Light load, maximum intent every rep. This trains rate of force development, not raw strength.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=smith+machine+chest+press+throw+power" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">8 reps</div><div class="ex-name">Cable Woodchop</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Cable set high, chop diagonally down across your body, driven by rotating through your hips and trunk. Controlled return each rep.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=cable+woodchop+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="block"><div class="block-label">Block B · 3 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6 reps</div><div class="ex-name">BB Step Up to Hip Flex</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Step up onto a box carrying a barbell, then drive your trailing knee up to hip height at the top — like a running knee drive under load. This trains single-leg power and hip flexion strength together, both critical for the sprint work coming in Phase 3.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=barbell+step+up+hip+flexion+power" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6 reps</div><div class="ex-name">MB Squat to Throw</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Squat down holding a medicine ball, then explode up and throw the ball forward or overhead using the momentum from your legs. Full-body power transfer exercise — the ball should leave your hands with real force.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=medicine+ball+squat+to+throw+power" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">10 reps</div><div class="ex-name">Hanging Leg Raises</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Dead hang, raise straight legs to hip height using your abs. Control the lowering. Harder than knee raises due to the longer lever — drop to bent knees if straight legs cause swinging.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=hanging+leg+raise+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="block"><div class="block-label">Block C · 3 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6 reps</div><div class="ex-name">Landmine Lateral Lunge</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Barbell anchored in a landmine, held at your chest. Step laterally into a side lunge holding the bar, then drive back to standing. Trains the frontal plane movement pattern that's often missing from standard programming but critical for change of direction.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=landmine+lateral+lunge+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">15 reps</div><div class="ex-name">Weighted Push Up</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Standard push-up with a plate or weighted vest for added load. Full range — chest to just above the floor, full lockout at the top. Keep your body in a straight line throughout.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=weighted+push+up+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="day-section">
+  <div class="day-head"><div class="day-num">03</div><div class="day-name">Full Body Pull</div><div class="day-type">Strength</div></div>
+  <div class="day-complete"><input type="checkbox" data-id="week-8-d3"><label>Mark session complete</label></div>
+
+  <div class="block"><div class="block-label">Block A · 4 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6/4/3/1</div><div class="ex-name">Trap Bar Deadlift</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <div class="video-panel"><iframe src="https://www.youtube.com/embed/EsqwERaSTMI" title="Trap bar deadlift tutorial" allowfullscreen loading="lazy"></iframe></div>
+        <p class="ex-cue">Deadlift performed inside a hex/trap bar. Straight sets across 4, paired with broad jumps after each set — same principle as the squat/box jump pairing, training the same hip-dominant extension pattern at both heavy load and high speed. <strong>Keep your chest tall and drive through the whole foot.</strong></p>
+        <a class="watch-link" href="https://www.youtube.com/watch?v=EsqwERaSTMI" target="_blank">Watch full video ↗</a>
+        <div class="prog-panel"><div class="prog-panel-toggle" onclick="event.stopPropagation();toggleProg(this)">vs last week ▾</div><div class="prog-panel-body"></div></div>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6/4/3/1</div><div class="ex-name">BB Seal Row</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Barbell row lying face-down on a bench elevated on blocks. Straight sets across 4, paired with alternating grip inverted rows after each set for a speed-strength contrast on the same pulling pattern.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=barbell+seal+row+tutorial" target="_blank">Search video ↗</a>
+        <div class="prog-panel"><div class="prog-panel-toggle" onclick="event.stopPropagation();toggleProg(this)">vs last week ▾</div><div class="prog-panel-body"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block"><div class="block-label">Block B · 3 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">3 reps</div><div class="ex-name">Broad Jump</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Standing long jump — maximum horizontal distance from a standstill. Land with both feet together, absorb through your hips and knees. Measures and trains horizontal power output, which transfers directly to sprinting.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=broad+jump+tutorial+standing+long+jump" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">5 reps</div><div class="ex-name">Alternating Grip Inverted Row</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Each side. Inverted row where one hand grips overhand and the other underhand, alternating which side leads. This asymmetric grip challenges your core to resist rotation while you pull.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=alternating+grip+inverted+row" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">20m</div><div class="ex-name">Trap Bar Carry</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Loaded carry using the trap bar — stand tall inside the frame, walk the distance keeping your chest up and core braced. Trains grip, posture, and loaded gait — foundational for on-field durability.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=trap+bar+carry+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="block"><div class="block-label">Block C · 3 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">2 reps</div><div class="ex-name">Nordic Eccentric</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Kneeling with your feet anchored, lower your body toward the floor as slowly as possible using hamstring control. The most effective hamstring injury prevention exercise in the evidence base — starts here and continues weekly through to Phase 3.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=nordic+hamstring+curl+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">12 reps</div><div class="ex-name">Lat Pull Down</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Wide grip, pull down to your upper chest driving your elbows down and back. Control the return to a full overhead stretch.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=lat+pulldown+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="day-section">
+  <div class="day-head"><div class="day-num">04</div><div class="day-name">Pull / Power</div><div class="day-type">Power</div></div>
+  <div class="day-complete"><input type="checkbox" data-id="week-8-d4"><label>Mark session complete</label></div>
+
+  <div class="block"><div class="block-label">Block A · 3 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6 reps</div><div class="ex-name">BB Cleans</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <div class="video-panel"><iframe src="https://www.youtube.com/embed/MlGgLbD59yk" title="Power clean tutorial" allowfullscreen loading="lazy"></iframe></div>
+        <p class="ex-cue">Power clean — bar travels from the floor to your front rack in one explosive pull. Full triple extension through your ankles, knees, and hips at the top, then drop underneath to catch the bar on your shoulders. <strong>This is your primary Olympic lift for the next 6 weeks</strong> — technique matters more than load here. Start light and let the pattern earn heavier weight.</p>
+        <a class="watch-link" href="https://www.youtube.com/watch?v=MlGgLbD59yk" target="_blank">Watch full video ↗</a>
+        <div class="prog-panel"><div class="prog-panel-toggle" onclick="event.stopPropagation();toggleProg(this)">vs last week ▾</div><div class="prog-panel-body"></div></div>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6 reps</div><div class="ex-name">Chin Ups</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Underhand grip pull-up. Same full range as a pull-up — full hang at the bottom, chin over the bar at the top — with slightly more bicep involvement due to the grip.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=chin+up+underhand+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">12 reps</div><div class="ex-name">Oblique Crunches</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Each side. Side-lying or on a decline, crunch by bringing your ribcage toward your hip on one side. Keep it controlled — this is a rotation and lateral flexion exercise, not a speed exercise.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=oblique+crunch+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="block"><div class="block-label">Block B · 3 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">5 reps</div><div class="ex-name">SL GHD Back Extension</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Single leg GHD back extension — one leg hooked in, the other extended or lifted. Trains each side of your posterior chain independently, exposing and correcting asymmetries.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=single+leg+GHD+back+extension" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6 reps</div><div class="ex-name">Explosive BW Inverted Row</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Bodyweight inverted row performed with maximum intent, alternating which hand leads each rep for an added anti-rotation demand — pull explosively so your chest briefly leaves the bar path at the top.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=explosive+inverted+row+power" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">8 reps</div><div class="ex-name">Cable Pallof Press</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Anti-rotation press — cable at chest height, press straight out and hold briefly before returning. The resistance pulls you sideways; your job is to resist rotating. One of the best core stability exercises available.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=pallof+press+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="block"><div class="block-label">Block C · 3 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">20s</div><div class="ex-name">Cable Abduction ISO</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Hold your leg out to the side against the cable resistance for the full duration rather than doing reps. This isometric hold builds hip stability endurance that supports change of direction under fatigue.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=cable+hip+abduction+isometric+hold" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">8 reps</div><div class="ex-name">Zottman Curl</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Curl up with an underhand grip, rotate to an overhand grip at the top, then lower slowly with the overhand grip. Trains your biceps and forearm extensors together — useful for grip health with all the carrying and hanging work in this program.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=zottman+curl+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="week-extras">
+  <div class="rpe-row"><span class="rpe-label">Week RPE:</span>
+    <button class="rpe-btn" data-rpe="1">1</button><button class="rpe-btn" data-rpe="2">2</button><button class="rpe-btn" data-rpe="3">3</button><button class="rpe-btn" data-rpe="4">4</button><button class="rpe-btn" data-rpe="5">5</button><button class="rpe-btn" data-rpe="6">6</button><button class="rpe-btn" data-rpe="7">7</button><button class="rpe-btn" data-rpe="8">8</button><button class="rpe-btn" data-rpe="9">9</button><button class="rpe-btn" data-rpe="10">10</button>
+  </div>
+  <textarea class="week-notes" placeholder="How did Week 9 feel? Same structure as Week 8 — check whether the extra load is moving cleanly..."></textarea>
+</div>
+
+</div>
+
+<div class="week-page" id="week-11">
+
+<div class="day-section">
+  <div class="day-head"><div class="day-num">01</div><div class="day-name">Full Body Press</div><div class="day-type">Strength</div></div>
+  <div class="day-complete"><input type="checkbox" data-id="week-8-d1"><label>Mark session complete</label></div>
+
+  <div class="block"><div class="block-label">Block A · 4 sets — paired with jumps</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">8/6/6/4</div><div class="ex-name">BB Back Squat</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <div class="video-panel"><iframe src="https://www.youtube.com/embed/8PMjqgR8Wa8" title="Barbell back squat tutorial" allowfullscreen loading="lazy"></iframe></div>
+        <p class="ex-cue">Straight sets this week rather than a ramp to a single. Pair each set with 5 box jumps — do your squat set, rest briefly, then jump, then rest before the next squat set. <strong>The jumps train the same triple extension pattern at high speed</strong> that the squat trains under load — that pairing is the whole point of this phase.</p>
+        <a class="watch-link" href="https://www.youtube.com/watch?v=8PMjqgR8Wa8" target="_blank">Watch full video ↗</a>
+        <div class="prog-panel"><div class="prog-panel-toggle" onclick="event.stopPropagation();toggleProg(this)">vs last week ▾</div><div class="prog-panel-body"></div></div>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">5 reps</div><div class="ex-name">Banded CMJ</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Countermovement jump with a resistance band added around your hips or a barbell for accommodating resistance. The band increases the demand on rate of force development compared to a standard jump. Jump as high as possible every rep.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=banded+countermovement+jump+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">8/6/6/4</div><div class="ex-name">BB Bench Press</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <div class="video-panel"><iframe src="https://www.youtube.com/embed/vcBig73ojpE" title="Barbell bench press tutorial" allowfullscreen loading="lazy"></iframe></div>
+        <p class="ex-cue">Same idea — straight sets across 4, paired with med ball chest throws for upper body power. Do your bench set, rest, then throw the ball as hard as you can, rest, next bench set.</p>
+        <a class="watch-link" href="https://www.youtube.com/watch?v=vcBig73ojpE" target="_blank">Watch full video ↗</a>
+        <div class="prog-panel"><div class="prog-panel-toggle" onclick="event.stopPropagation();toggleProg(this)">vs last week ▾</div><div class="prog-panel-body"></div></div>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">5 reps</div><div class="ex-name">Plyo Push Up</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Explosive push-up where your hands leave the floor at the top — with or without a clap. Maximum speed on the push phase, land softly with slightly bent elbows to absorb the impact.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=plyometric+push+up+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="block"><div class="block-label">Block B · 3 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">8 reps</div><div class="ex-name">Leg Extension</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Higher rep work here — this comes after your heavy squat singles so it's about finishing volume on the quads, not chasing more max strength. Full range, controlled tempo.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=leg+extension+machine+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6 reps</div><div class="ex-name">Weighted Dips</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Heaviest dip load of the phase so far. Full range — upper arms parallel to the floor at the bottom, full lockout at the top.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=weighted+dips+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">10 reps</div><div class="ex-name">Seated Calf Raise</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Full range every rep — deep stretch at the bottom, full contraction at the top.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=seated+calf+raise+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+
+  </div>
+
+<div class="day-section">
+  <div class="day-head"><div class="day-num">02</div><div class="day-name">Press / Power</div><div class="day-type">Power</div></div>
+  <div class="day-complete"><input type="checkbox" data-id="week-8-d2"><label>Mark session complete</label></div>
+
+  <div class="block"><div class="block-label">Block A · 3 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6 reps</div><div class="ex-name">BB Split Squat (concentric only)</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Start from the bottom position of a split squat and drive up explosively — there's no eccentric lowering phase, you step or drop back to reset each rep. This isolates the concentric power output without the fatigue of a full eccentric-concentric cycle. Focus purely on speed of the upward drive.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=concentric+only+split+squat+power" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6 reps</div><div class="ex-name">Smith Machine Chest Press Throw</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Explosive press on the smith machine — push the bar as fast as possible so it briefly leaves your hands at the top, like a throw. Light load, maximum intent every rep. This trains rate of force development, not raw strength.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=smith+machine+chest+press+throw+power" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">8 reps</div><div class="ex-name">Cable Woodchop</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Cable set high, chop diagonally down across your body, driven by rotating through your hips and trunk. Controlled return each rep.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=cable+woodchop+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="block"><div class="block-label">Block B · 3 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6 reps</div><div class="ex-name">BB Step Up to Hip Flex</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Step up onto a box carrying a barbell, then drive your trailing knee up to hip height at the top — like a running knee drive under load. This trains single-leg power and hip flexion strength together, both critical for the sprint work coming in Phase 3.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=barbell+step+up+hip+flexion+power" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6 reps</div><div class="ex-name">MB Squat to Throw</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Squat down holding a medicine ball, then explode up and throw the ball forward or overhead using the momentum from your legs. Full-body power transfer exercise — the ball should leave your hands with real force.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=medicine+ball+squat+to+throw+power" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">10 reps</div><div class="ex-name">Hanging Leg Raises</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Dead hang, raise straight legs to hip height using your abs. Control the lowering. Harder than knee raises due to the longer lever — drop to bent knees if straight legs cause swinging.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=hanging+leg+raise+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="block"><div class="block-label">Block C · 3 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6 reps</div><div class="ex-name">Landmine Lateral Lunge</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Barbell anchored in a landmine, held at your chest. Step laterally into a side lunge holding the bar, then drive back to standing. Trains the frontal plane movement pattern that's often missing from standard programming but critical for change of direction.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=landmine+lateral+lunge+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">15 reps</div><div class="ex-name">Weighted Push Up</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Standard push-up with a plate or weighted vest for added load. Full range — chest to just above the floor, full lockout at the top. Keep your body in a straight line throughout.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=weighted+push+up+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="day-section">
+  <div class="day-head"><div class="day-num">03</div><div class="day-name">Full Body Pull</div><div class="day-type">Strength</div></div>
+  <div class="day-complete"><input type="checkbox" data-id="week-8-d3"><label>Mark session complete</label></div>
+
+  <div class="block"><div class="block-label">Block A · 4 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6/4/3/1</div><div class="ex-name">Trap Bar Deadlift</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <div class="video-panel"><iframe src="https://www.youtube.com/embed/EsqwERaSTMI" title="Trap bar deadlift tutorial" allowfullscreen loading="lazy"></iframe></div>
+        <p class="ex-cue">Deadlift performed inside a hex/trap bar. Straight sets across 4, paired with broad jumps after each set — same principle as the squat/box jump pairing, training the same hip-dominant extension pattern at both heavy load and high speed. <strong>Keep your chest tall and drive through the whole foot.</strong></p>
+        <a class="watch-link" href="https://www.youtube.com/watch?v=EsqwERaSTMI" target="_blank">Watch full video ↗</a>
+        <div class="prog-panel"><div class="prog-panel-toggle" onclick="event.stopPropagation();toggleProg(this)">vs last week ▾</div><div class="prog-panel-body"></div></div>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6/4/3/1</div><div class="ex-name">BB Seal Row</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Barbell row lying face-down on a bench elevated on blocks. Straight sets across 4, paired with alternating grip inverted rows after each set for a speed-strength contrast on the same pulling pattern.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=barbell+seal+row+tutorial" target="_blank">Search video ↗</a>
+        <div class="prog-panel"><div class="prog-panel-toggle" onclick="event.stopPropagation();toggleProg(this)">vs last week ▾</div><div class="prog-panel-body"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block"><div class="block-label">Block B · 3 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">3 reps</div><div class="ex-name">Broad Jump</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Standing long jump — maximum horizontal distance from a standstill. Land with both feet together, absorb through your hips and knees. Measures and trains horizontal power output, which transfers directly to sprinting.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=broad+jump+tutorial+standing+long+jump" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">5 reps</div><div class="ex-name">Alternating Grip Inverted Row</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Each side. Inverted row where one hand grips overhand and the other underhand, alternating which side leads. This asymmetric grip challenges your core to resist rotation while you pull.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=alternating+grip+inverted+row" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">20m</div><div class="ex-name">Trap Bar Carry</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Loaded carry using the trap bar — stand tall inside the frame, walk the distance keeping your chest up and core braced. Trains grip, posture, and loaded gait — foundational for on-field durability.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=trap+bar+carry+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="block"><div class="block-label">Block C · 3 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">2 reps</div><div class="ex-name">Nordic Eccentric</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Kneeling with your feet anchored, lower your body toward the floor as slowly as possible using hamstring control. The most effective hamstring injury prevention exercise in the evidence base — starts here and continues weekly through to Phase 3.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=nordic+hamstring+curl+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">12 reps</div><div class="ex-name">Lat Pull Down</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Wide grip, pull down to your upper chest driving your elbows down and back. Control the return to a full overhead stretch.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=lat+pulldown+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="day-section">
+  <div class="day-head"><div class="day-num">04</div><div class="day-name">Pull / Power</div><div class="day-type">Power</div></div>
+  <div class="day-complete"><input type="checkbox" data-id="week-8-d4"><label>Mark session complete</label></div>
+
+  <div class="block"><div class="block-label">Block A · 3 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">5 reps</div><div class="ex-name">BB Cleans</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <div class="video-panel"><iframe src="https://www.youtube.com/embed/MlGgLbD59yk" title="Power clean tutorial" allowfullscreen loading="lazy"></iframe></div>
+        <p class="ex-cue">Power clean — bar travels from the floor to your front rack in one explosive pull. Full triple extension through your ankles, knees, and hips at the top, then drop underneath to catch the bar on your shoulders. <strong>This is your primary Olympic lift for the next 6 weeks</strong> — technique matters more than load here. Start light and let the pattern earn heavier weight.</p>
+        <a class="watch-link" href="https://www.youtube.com/watch?v=MlGgLbD59yk" target="_blank">Watch full video ↗</a>
+        <div class="prog-panel"><div class="prog-panel-toggle" onclick="event.stopPropagation();toggleProg(this)">vs last week ▾</div><div class="prog-panel-body"></div></div>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">5 reps</div><div class="ex-name">Chin Ups</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Underhand grip pull-up. Same full range as a pull-up — full hang at the bottom, chin over the bar at the top — with slightly more bicep involvement due to the grip.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=chin+up+underhand+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">12 reps</div><div class="ex-name">Oblique Crunches</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Each side. Side-lying or on a decline, crunch by bringing your ribcage toward your hip on one side. Keep it controlled — this is a rotation and lateral flexion exercise, not a speed exercise.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=oblique+crunch+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="block"><div class="block-label">Block B · 3 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">5 reps</div><div class="ex-name">SL GHD Back Extension</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Single leg GHD back extension — one leg hooked in, the other extended or lifted. Trains each side of your posterior chain independently, exposing and correcting asymmetries.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=single+leg+GHD+back+extension" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6 reps</div><div class="ex-name">Explosive BW Inverted Row</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Bodyweight inverted row performed with maximum intent, alternating which hand leads each rep for an added anti-rotation demand — pull explosively so your chest briefly leaves the bar path at the top.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=explosive+inverted+row+power" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">8 reps</div><div class="ex-name">Cable Pallof Press</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Anti-rotation press — cable at chest height, press straight out and hold briefly before returning. The resistance pulls you sideways; your job is to resist rotating. One of the best core stability exercises available.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=pallof+press+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="block"><div class="block-label">Block C · 3 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">20s</div><div class="ex-name">Cable Abduction ISO</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Hold your leg out to the side against the cable resistance for the full duration rather than doing reps. This isometric hold builds hip stability endurance that supports change of direction under fatigue.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=cable+hip+abduction+isometric+hold" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">8 reps</div><div class="ex-name">Zottman Curl</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Curl up with an underhand grip, rotate to an overhand grip at the top, then lower slowly with the overhand grip. Trains your biceps and forearm extensors together — useful for grip health with all the carrying and hanging work in this program.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=zottman+curl+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="week-extras">
+  <div class="rpe-row"><span class="rpe-label">Week RPE:</span>
+    <button class="rpe-btn" data-rpe="1">1</button><button class="rpe-btn" data-rpe="2">2</button><button class="rpe-btn" data-rpe="3">3</button><button class="rpe-btn" data-rpe="4">4</button><button class="rpe-btn" data-rpe="5">5</button><button class="rpe-btn" data-rpe="6">6</button><button class="rpe-btn" data-rpe="7">7</button><button class="rpe-btn" data-rpe="8">8</button><button class="rpe-btn" data-rpe="9">9</button><button class="rpe-btn" data-rpe="10">10</button>
+  </div>
+  <textarea class="week-notes" placeholder="How did Week 9 feel? Same structure as Week 8 — check whether the extra load is moving cleanly..."></textarea>
+</div>
+
+</div>
+
+<div class="week-page" id="week-12">
+
+<div class="day-section">
+  <div class="day-head"><div class="day-num">01</div><div class="day-name">Lower Body Press</div><div class="day-type">Test</div></div>
+  <div class="day-complete"><input type="checkbox" data-id="week12-d1"><label>Mark session complete</label></div>
+
+  <div class="block"><div class="block-label">Block A · 5 sets — build to a true max</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">3/1/1/1/1</div><div class="ex-name">BB Back Squat</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <div class="video-panel"><iframe src="https://www.youtube.com/embed/8PMjqgR8Wa8" title="Barbell back squat tutorial" allowfullscreen loading="lazy"></iframe></div>
+        <p class="ex-cue">This is your test day. Warm up thoroughly, then build across the singles toward a genuine 1-rep max — a weight you can barely complete with good form. <strong>Log this number carefully</strong> — it's your reference point for every percentage-based session in Phase 3.</p>
+        <a class="watch-link" href="https://www.youtube.com/watch?v=8PMjqgR8Wa8" target="_blank">Watch full video ↗</a>
+        <div class="prog-panel"><div class="prog-panel-toggle" onclick="event.stopPropagation();toggleProg(this)">vs last week ▾</div><div class="prog-panel-body"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block"><div class="block-label">Block B · 2 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">5 reps</div><div class="ex-name">BB Squat (concentric only)</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">From the bottom of a squat (using pins or blocks), drive up explosively — no eccentric phase. This measures pure concentric power output separate from your ability to control a descent, useful context alongside your max squat number.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=concentric+only+squat+power" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">15 reps</div><div class="ex-name">Leg Extension</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Full range, controlled tempo. A finishing volume set after the max effort work — nothing heroic needed here.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=leg+extension+machine+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">10 reps</div><div class="ex-name">GHD Sit Ups</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Full range sit-up on the GHD, arms overhead at the bottom. Controlled and complete every rep.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=GHD+sit+up+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="block"><div class="block-label">Block C · 2 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">12 reps</div><div class="ex-name">Seated Calf Raise</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Full range every rep — deep stretch at the bottom, full contraction at the top.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=seated+calf+raise+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6 reps</div><div class="ex-name">BB Step Up to Hip Flex</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Step up onto a box with a barbell, drive your trailing knee to hip height at the top. Light finishing work — technique over load today.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=barbell+step+up+hip+flexion+power" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">20 reps</div><div class="ex-name">Strict Twist</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Slow, controlled trunk rotation. No momentum. Finish the session with quality, not fatigue.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=standing+trunk+rotation+strict+twist" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="day-section">
+  <div class="day-head"><div class="day-num">02</div><div class="day-name">Upper Body Press</div><div class="day-type">Test</div></div>
+  <div class="day-complete"><input type="checkbox" data-id="week12-d2"><label>Mark session complete</label></div>
+
+  <div class="block"><div class="block-label">Block A · 5 sets — build to a true max</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6/2/1/1/1</div><div class="ex-name">BB Bench Press</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <div class="video-panel"><iframe src="https://www.youtube.com/embed/vcBig73ojpE" title="Barbell bench press tutorial" allowfullscreen loading="lazy"></iframe></div>
+        <p class="ex-cue">Same principle as the squat test — warm up properly, build across singles to a genuine max. Use a spotter for this one. <strong>Log the number</strong> — it feeds directly into your Phase 3 percentages.</p>
+        <a class="watch-link" href="https://www.youtube.com/watch?v=vcBig73ojpE" target="_blank">Watch full video ↗</a>
+        <div class="prog-panel"><div class="prog-panel-toggle" onclick="event.stopPropagation();toggleProg(this)">vs last week ▾</div><div class="prog-panel-body"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block"><div class="block-label">Block B · 2 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6 reps</div><div class="ex-name">Smith Machine Chest Press Throw</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Explosive press, bar briefly leaves your hands at the top. Light load, maximum speed. A good marker of how your upper body power has come along across the phase.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=smith+machine+chest+press+throw+power" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">15 reps</div><div class="ex-name">Dips</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Bodyweight dips, full range. No need to add weight today — this is finishing volume.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=dips+tutorial+proper+form" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">8 reps</div><div class="ex-name">Cable Woodchop</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Cable set high, chop diagonally down driven by hip and trunk rotation.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=cable+woodchop+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="block"><div class="block-label">Block C · 2 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">12 reps</div><div class="ex-name">DB JM Press</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Lower toward your chin with elbows flared slightly, press back up. Moderate volume to close out the tricep work for the phase.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=JM+press+tricep+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6 reps</div><div class="ex-name">MB Squat to Throw</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Squat down with the ball, explode up and throw using leg drive. Full-body power finisher.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=medicine+ball+squat+to+throw+power" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">10 reps</div><div class="ex-name">Hanging Leg Raises</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Dead hang, raise straight legs to hip height using your abs. Controlled lowering, no swinging.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=hanging+leg+raise+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="day-section">
+  <div class="day-head"><div class="day-num">03</div><div class="day-name">Lower Body Pull</div><div class="day-type">Test</div></div>
+  <div class="day-complete"><input type="checkbox" data-id="week12-d3"><label>Mark session complete</label></div>
+
+  <div class="block"><div class="block-label">Block A · 4 sets — build to a true max</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6/4/1/1/1</div><div class="ex-name">Trap Bar Deadlift</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <div class="video-panel"><iframe src="https://www.youtube.com/embed/EsqwERaSTMI" title="Trap bar deadlift tutorial" allowfullscreen loading="lazy"></iframe></div>
+        <p class="ex-cue">Build to a genuine max on the trap bar. This is the third and final testing lift feeding into your Phase 3 percentages — take the warm-up seriously, this pull carries the most injury risk of your three max tests.</p>
+        <a class="watch-link" href="https://www.youtube.com/watch?v=EsqwERaSTMI" target="_blank">Watch full video ↗</a>
+        <div class="prog-panel"><div class="prog-panel-toggle" onclick="event.stopPropagation();toggleProg(this)">vs last week ▾</div><div class="prog-panel-body"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block"><div class="block-label">Block B · 3 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6 reps</div><div class="ex-name">BB Cleans</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Moderate load, clean technique — a good marker of how the Olympic lift has developed across the phase without going for an all-out max on a technical lift.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=power+clean+tutorial+for+athletes" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">15 reps</div><div class="ex-name">Hamstring Curl</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Standard lying hamstring curl — closing out the phase with solid volume on the posterior chain.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=lying+hamstring+curl+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">20m</div><div class="ex-name">1 Arm KB Carry</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Kettlebell carried in one hand, same principle as the suitcase carry — resist the lean, stay tall, walk the distance under control.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=single+arm+kettlebell+carry+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="block"><div class="block-label">Block C · 3 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">10 reps</div><div class="ex-name">GHD Back Extension</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Standard GHD back extension, glutes and hamstrings driving the movement, not your lower back.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=GHD+back+extension+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">20 reps</div><div class="ex-name">Smith Machine Calf Raise</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Full range calf raise closing out the phase's calf work.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=smith+machine+calf+raise+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">10 reps</div><div class="ex-name">Cable Pallof Press</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Anti-rotation press, hold briefly at full extension, control the return. Closing the phase with the core stability work that's underpinned every heavy lift.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=pallof+press+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="block"><div class="block-label">Block D · 3 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">2 reps</div><div class="ex-name">Nordic Eccentric</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Slow, controlled lowering using hamstring strength. This continues weekly into Phase 3 as your primary hamstring injury prevention exercise.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=nordic+hamstring+curl+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">10 reps</div><div class="ex-name">Cable Abduction</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Each side. Standing cable hip abduction, controlled through the full range both directions.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=cable+hip+abduction+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="day-section">
+  <div class="day-head"><div class="day-num">04</div><div class="day-name">Upper Body Pull</div><div class="day-type">Test</div></div>
+  <div class="day-complete"><input type="checkbox" data-id="week12-d4"><label>Mark session complete</label></div>
+
+  <div class="block"><div class="block-label">Block A · 5 sets — build to a true max</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">4/3/1/1/1</div><div class="ex-name">BB Seal Row</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Your fourth and final max test of the week. Build across singles to a true max seal row — this is a good marker of raw pulling strength since the strict form removes any assistance from your legs or lower back.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=barbell+seal+row+tutorial" target="_blank">Search video ↗</a>
+        <div class="prog-panel"><div class="prog-panel-toggle" onclick="event.stopPropagation();toggleProg(this)">vs last week ▾</div><div class="prog-panel-body"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block"><div class="block-label">Block B · 3 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6 reps</div><div class="ex-name">Chin Ups</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Full hang to chin over bar. Track whether you're stronger relative to bodyweight than when you started this phase back in Week 7.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=chin+up+underhand+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">10 reps</div><div class="ex-name">Cable Face Pulls</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Rope attachment at face height, pull toward your face while externally rotating your shoulders. Great shoulder health exercise that balances out all the pressing volume in this program.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=cable+face+pull+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">12 reps</div><div class="ex-name">Oblique Crunches</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Each side. Controlled rotation and lateral flexion, no momentum.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=oblique+crunch+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="block"><div class="block-label">Block C · 3 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">6 reps</div><div class="ex-name">Explosive BW Inverted Row</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Maximum intent inverted row, chest briefly leaving the bar path at the top. A good final check on upper body pulling power.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=explosive+inverted+row+power" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">12 reps</div><div class="ex-name">KB Gorilla Rows</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Alternating kettlebell rows from the floor, anti-rotation demand from the stabilising hand.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=kettlebell+gorilla+row+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">8 reps</div><div class="ex-name">Banded GHD Twist</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Each side. Rotational core work on the GHD with band resistance added — closing out the phase's rotational training.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=GHD+rotational+twist+band" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="block"><div class="block-label">Block D · 3 sets</div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">30 reps</div><div class="ex-name">DB Biceps Curl</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">High rep finisher — this should burn on the last set. Closing out Phase 2's arm work.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=dumbbell+bicep+curl+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+    <div class="ex-card" onclick="toggleEx(this)">
+      <div class="ex-row">
+        <div class="ex-sets">8 reps</div><div class="ex-name">Reverse Cable Curl</div>
+        <div class="ex-weight" onclick="event.stopPropagation()"><input type="number" placeholder="kg"><span class="ex-arrow"></span></div>
+        <div class="ex-chevron">▾</div>
+      </div>
+      <div class="ex-detail">
+        <p class="ex-cue">Overhand grip cable curl — trains your forearm extensors and brachioradialis, muscles that get neglected in standard curl programming but support grip strength for all the carrying work in this program.</p>
+        <a class="watch-link" href="https://www.youtube.com/results?search_query=reverse+cable+curl+tutorial" target="_blank">Search video ↗</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="week-extras">
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:20px;margin-bottom:24px">
+    <div style="font-weight:700;font-size:16px;margin-bottom:8px">Phase 2 complete</div>
+    <p style="color:var(--muted);font-size:14px;line-height:1.7">These four numbers — your back squat, bench press, trap bar deadlift, and seal row maxes — are what Phase 3's percentage-based training is built from. Make sure they're logged above before moving on. If you haven't tested one of them accurately, retest it before Week 13 rather than guessing.</p>
+  </div>
+  <div class="rpe-row"><span class="rpe-label">Week RPE:</span>
+    <button class="rpe-btn" data-rpe="1">1</button><button class="rpe-btn" data-rpe="2">2</button><button class="rpe-btn" data-rpe="3">3</button><button class="rpe-btn" data-rpe="4">4</button><button class="rpe-btn" data-rpe="5">5</button><button class="rpe-btn" data-rpe="6">6</button><button class="rpe-btn" data-rpe="7">7</button><button class="rpe-btn" data-rpe="8">8</button><button class="rpe-btn" data-rpe="9">9</button><button class="rpe-btn" data-rpe="10">10</button>
+  </div>
+  <textarea class="week-notes" placeholder="Testing week — how did the maxes feel? Any lifts you want to retest before Phase 3?"></textarea>
+</div>
+
+</div>
+
+
+
+<!-- TRACKER MODAL -->
+<div class="modal-overlay" id="trackerModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>Your Progress</h3>
+      <button class="modal-close" onclick="closeTracker()">✕</button>
+    </div>
+    <div class="modal-body" id="trackerBody">
+      <div class="stat-grid" id="statGrid"></div>
+      <div id="liftCharts"></div>
+      <div class="btn-row">
+        <button class="btn-sm" onclick="exportData()">Export data</button>
+        <button class="btn-sm" onclick="document.getElementById('importFile').click()">Import data</button>
+        <button class="btn-sm danger" onclick="clearAllData()">Clear all data</button>
+        <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)">
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══ STORAGE ═══ */
+function saveData(key, val) { try { localStorage.setItem('tpb_' + key, JSON.stringify(val)); } catch(e){} }
+function getData(key) { try { const v = localStorage.getItem('tpb_' + key); return v ? JSON.parse(v) : null; } catch(e){ return null; } }
+function getAllKeys() {
+  const keys = [];
+  for (let i = 0; i < localStorage.length; i++) {
+    const k = localStorage.key(i);
+    if (k && k.startsWith('tpb_')) keys.push(k.replace('tpb_',''));
+  }
+  return keys;
+}
+
+/* ═══ WEEK NAV ═══ */
+function showWeek(n) {
+  document.querySelectorAll('.wn-btn').forEach((b,i) => b.classList.toggle('active', weekOrder[i] === 'week-' + n));
+  document.querySelectorAll('.week-page').forEach(p => p.classList.remove('active'));
+  const target = document.getElementById('week-' + n);
+  if (target) target.classList.add('active');
+  window.scrollTo(0,0);
+}
+
+/* ═══ EXERCISE CARD TOGGLE ═══ */
+function toggleEx(card) { card.classList.toggle('open'); }
+
+/* ═══ WEIGHT INPUTS ═══ */
+const weekOrder = ['week-7','week-8','week-9','week-10','week-11','week-12'];
+
+function exId(weekId, name) {
+  return weekId + '__' + name.toLowerCase().replace(/[^a-z0-9]+/g,'_');
+}
+function prevWeekId(weekId) {
+  const idx = weekOrder.indexOf(weekId);
+  return idx > 0 ? weekOrder[idx-1] : null;
+}
+
+function initWeightInputs() {
+  document.querySelectorAll('.ex-card').forEach(card => {
+    const weekPage = card.closest('.week-page');
+    if (!weekPage) return;
+    const weekId = weekPage.id;
+    const nameEl = card.querySelector('.ex-name');
+    const input = card.querySelector('.ex-weight input');
+    const arrow = card.querySelector('.ex-arrow');
+    if (!nameEl || !input) return;
+    const id = exId(weekId, nameEl.textContent.trim());
+
+    const saved = getData('w_' + id);
+    if (saved !== null) input.value = saved;
+    updateArrow(weekId, nameEl.textContent.trim(), saved, arrow, input);
+
+    input.addEventListener('input', () => {
+      const val = parseFloat(input.value);
+      if (!isNaN(val) && val > 0) {
+        saveData('w_' + id, val);
+        updateArrow(weekId, nameEl.textContent.trim(), val, arrow, input);
+      } else {
+        saveData('w_' + id, null);
+        input.classList.remove('improved','lower');
+        if (arrow) arrow.textContent = '';
+      }
+    });
+  });
+}
+
+function updateArrow(weekId, name, val, arrowEl, inputEl) {
+  if (!arrowEl || val === null) return;
+  const pid = prevWeekId(weekId);
+  if (!pid) { arrowEl.textContent = ''; return; }
+  const prevVal = getData('w_' + exId(pid, name));
+  if (prevVal === null) { arrowEl.textContent = ''; return; }
+  inputEl.classList.remove('improved','lower');
+  if (val > prevVal) { arrowEl.textContent = '↑'; arrowEl.style.color = '#5ba88c'; inputEl.classList.add('improved'); }
+  else if (val < prevVal) { arrowEl.textContent = '↓'; arrowEl.style.color = '#c9573f'; inputEl.classList.add('lower'); }
+  else { arrowEl.textContent = '→'; arrowEl.style.color = '#8a94a3'; }
+}
+
+/* ═══ DAY COMPLETE ═══ */
+function initDayComplete() {
+  document.querySelectorAll('.day-complete input').forEach(cb => {
+    const id = cb.dataset.id;
+    if (getData('done_' + id)) cb.checked = true;
+    cb.addEventListener('change', () => saveData('done_' + id, cb.checked));
+  });
+}
+
+/* ═══ PROGRESSION PANEL ═══ */
+function toggleProg(el) {
+  const body = el.nextElementSibling;
+  body.classList.toggle('open');
+  if (body.classList.contains('open')) buildProgPanel(el);
+}
+function buildProgPanel(toggleEl) {
+  const card = toggleEl.closest('.ex-card');
+  const weekPage = card.closest('.week-page');
+  const weekId = weekPage.id;
+  const pid = prevWeekId(weekId);
+  const name = card.querySelector('.ex-name').textContent.trim();
+  const body = toggleEl.nextElementSibling;
+  if (!pid) { body.innerHTML = '<div class="prog-row"><span>No prior week to compare</span></div>'; return; }
+  const prevVal = getData('w_' + exId(pid, name));
+  const currVal = getData('w_' + exId(weekId, name));
+  let deltaHtml = '—';
+  if (prevVal !== null && currVal !== null) {
+    const d = currVal - prevVal;
+    deltaHtml = `<span class="${d>0?'up':d<0?'down':''}">${d>0?'+':''}${d}kg</span>`;
+  }
+  body.innerHTML = `
+    <div class="prog-row"><span>Last week</span><span>${prevVal!==null?prevVal+'kg':'—'}</span></div>
+    <div class="prog-row"><span>This week</span><span>${currVal!==null?currVal+'kg':'—'}</span></div>
+    <div class="prog-row"><span>Change</span>${deltaHtml}</div>
+  `;
+}
+
+/* ═══ RPE + NOTES ═══ */
+function initWeekExtras() {
+  document.querySelectorAll('.week-page').forEach(page => {
+    const weekId = page.id;
+    page.querySelectorAll('.rpe-btn').forEach(btn => {
+      const saved = getData('rpe_' + weekId);
+      if (saved == btn.dataset.rpe) btn.classList.add('selected');
+      btn.addEventListener('click', () => {
+        page.querySelectorAll('.rpe-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        saveData('rpe_' + weekId, btn.dataset.rpe);
+      });
+    });
+    const notes = page.querySelector('.week-notes');
+    if (notes) {
+      const saved = getData('note_' + weekId);
+      if (saved) notes.value = saved;
+      notes.addEventListener('input', () => saveData('note_' + weekId, notes.value));
+    }
+  });
+}
+
+/* ═══ TRACKER MODAL ═══ */
+function openTracker() {
+  document.getElementById('trackerModal').classList.add('open');
+  buildStats();
+  buildCharts();
+}
+function closeTracker() { document.getElementById('trackerModal').classList.remove('open'); }
+
+function buildStats() {
+  let completed = 0, total = 0;
+  document.querySelectorAll('.day-complete input').forEach(cb => { total++; if (cb.checked) completed++; });
+  let logged = 0;
+  getAllKeys().forEach(k => { if (k.startsWith('w_') && getData(k) !== null) logged++; });
+  document.getElementById('statGrid').innerHTML = `
+    <div class="stat-card"><div class="stat-num" style="color:var(--blue)">${completed}/${total}</div><div class="stat-label">Sessions done</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:var(--orange)">${logged}</div><div class="stat-label">Weights logged</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:var(--teal)">${total?Math.round(completed/total*100):0}%</div><div class="stat-label">Complete</div></div>
+  `;
+}
+
+const KEY_LIFTS = ['BB Back Squat','BB Bench Press','Trap Bar Deadlift','BB Seal Row','BB Cleans'];
+function buildCharts() {
+  const container = document.getElementById('liftCharts');
+  container.innerHTML = '';
+  KEY_LIFTS.forEach(lift => {
+    const vals = weekOrder.map(w => getData('w_' + exId(w, lift)));
+    if (!vals.some(v => v !== null)) return;
+    const max = Math.max(...vals.filter(v => v !== null));
+    const wrap = document.createElement('div');
+    wrap.innerHTML = `<div class="lift-chart-title">${lift}</div>`;
+    const bars = document.createElement('div');
+    bars.className = 'chart-bars';
+    vals.forEach((v,i) => {
+      const bw = document.createElement('div');
+      bw.className = 'chart-bar-wrap';
+      const h = v !== null ? Math.max(4, Math.round(v/max*60)) : 2;
+      bw.innerHTML = `<div class="chart-bar" style="height:${h}px;opacity:${v!==null?1:0.25}"></div><div class="chart-label">${v||''}</div><div class="chart-label">W${i+1}</div>`;
+      bars.appendChild(bw);
+    });
+    wrap.appendChild(bars);
+    container.appendChild(wrap);
+  });
+  if (!container.innerHTML) container.innerHTML = '<p style="color:var(--dim);font-size:13px">Log weights on your main lifts to see progress charts here.</p>';
+}
+
+function exportData() {
+  const data = {};
+  getAllKeys().forEach(k => data[k] = getData(k));
+  const blob = new Blob([JSON.stringify(data,null,2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'tpb-progress.json';
+  a.click();
+}
+function importData(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      const data = JSON.parse(ev.target.result);
+      Object.entries(data).forEach(([k,v]) => saveData(k,v));
+      location.reload();
+    } catch(err) { alert('Invalid file'); }
+  };
+  reader.readAsText(file);
+}
+function clearAllData() {
+  if (!confirm('Clear all logged weights, notes, and progress?')) return;
+  getAllKeys().forEach(k => localStorage.removeItem('tpb_' + k));
+  location.reload();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  initWeightInputs();
+  initDayComplete();
+  initWeekExtras();
+});
+</script>
+
+
+<div class="crosspromo">
+  <div class="crosspromo-label">Part of the 18-Week Performance System</div>
+  <div class="crosspromo-links">
+    <a class="crosspromo-link" href="https://stefancali26-oss.github.io/18-week-program/" target="_blank">
+      <div class="cp-tag">Start here</div>
+      <div class="cp-name">Phase 1 — Strength</div>
+    </a>
+    <div class="crosspromo-link current">
+      <div class="cp-tag">You are here</div>
+      <div class="cp-name">Phase 2 — Strength &amp; Power</div>
+    </div>
+    <a class="crosspromo-link" href="https://stefancali26-oss.github.io/phase3-performance/" target="_blank">
+      <div class="cp-tag">Full system</div>
+      <div class="cp-name">Phase 3 — Performance</div>
+    </a>
+  </div>
+</div>
+
+</body>
+</html>
